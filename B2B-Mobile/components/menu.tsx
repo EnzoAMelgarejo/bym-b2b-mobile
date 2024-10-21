@@ -16,7 +16,7 @@ interface MenuProps {
     handlePress: (path: string) => void;
 }
 
-const Menu: React.FC<MenuProps> = ({ menuVisible, activeSection, handlePress }) => {
+export const  Menu: React.FC<MenuProps> = ({ menuVisible, activeSection, handlePress }) => {
     return menuVisible ? (
     <View style={styles.menu}>
       {sections.map(({ title, path }) => (
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
+    zIndex: 10,
   },
   menuItem: {
     paddingVertical: 10,
@@ -70,5 +71,3 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
 });
-
-export default Menu;

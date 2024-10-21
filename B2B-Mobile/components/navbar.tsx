@@ -4,7 +4,7 @@ import { View, Pressable, StyleSheet, Image, Text } from 'react-native';
 import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Link, useRouter } from 'expo-router';
-import Menu from './menu';
+import { Menu } from './menu';
 
 export default function Navbar() {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
