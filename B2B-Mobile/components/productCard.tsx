@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface PropsCard {
@@ -22,18 +22,18 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
           <Text style={styles.title}>{title}</Text>
           <View style={styles.starsContainer}>
             {Array.from({ length: 5 }, (_, index) => (
-              <TouchableOpacity key={index} onPress={() => handleRating(index + 1)}>
+              <Pressable key={index} onPress={() => handleRating(index + 1)}>
                 <MaterialIcons
                   name={index < rating ? 'star' : 'star-border'}
                   size={24}
-                  color={index < rating ? '#FFD700' : '#ccc'}
+                  color={index < rating ? '#00C400' : '#ccc'}
                 />
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
-          <TouchableOpacity style={styles.buyButton} onPress={() => alert('Producto añadido al carrito')}>
+          <Pressable style={styles.buyButton} onPress={() => alert('Producto añadido al carrito')}>
             <Text style={styles.buyButtonText}>Comprar</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     );
@@ -44,7 +44,6 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
       backgroundColor: '#f0f0f0',
       padding: 10,
       margin: 10,
-      borderRadius: 10,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -73,7 +72,7 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
       marginVertical: 8,
     },
     buyButton: {
-      backgroundColor: '#00c400',
+      backgroundColor: '#EF8216',
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,

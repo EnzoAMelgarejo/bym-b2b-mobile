@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',     // Color del borde (puedes cambiarlo por otro si prefieres)
     borderRadius: 5,         // Bordes redondeados (opcional)
     shadowColor: '#000',
+    position:'absolute',
+    zIndex: 10,
   },
   logo: {
     width: 150,

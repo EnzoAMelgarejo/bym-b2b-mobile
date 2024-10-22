@@ -63,9 +63,9 @@ export const Main = () => {
             </View>
 
             {/* Productos seleccionados para vos */}
-            <View style={styles.section}>
+            <View style={[styles.section, { marginBottom: 50 }]}>
                 <ProductList title="Seleccionados para vos" products={selectedProducts} />
-                </View>
+            </View>
         </ScrollView>
     );
 };

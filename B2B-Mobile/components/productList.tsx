@@ -24,7 +24,7 @@ export const ProductList: React.FC<Props> = ({ title, products }) => {
               />
             )}
             keyExtractor={(item, index) => index.toString()}
-            horizontal={false} // Cambiar a true si quieres que sea horizontal
+            horizontal={true} // Cambiar a false para que las listas sean verticales
           />
         </View>
     );
