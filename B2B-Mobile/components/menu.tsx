@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    position: 'absolute',  
+    position: 'absolute',
     },
   menuItem: {
     paddingVertical: 10,

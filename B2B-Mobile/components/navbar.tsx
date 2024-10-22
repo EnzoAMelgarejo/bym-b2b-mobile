@@ -58,6 +58,7 @@ export default function Navbar() {
 
 const styles = StyleSheet.create({
   navbar: {
+    width: '100%',
     backgroundColor: '#fff',
     padding: 10,
     display: 'flex',
@@ -67,10 +68,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,          // Grosor del borde
     borderColor: '#ccc',     // Color del borde (puedes cambiarlo por otro si prefieres)
-    borderRadius: 5,         // Bordes redondeados (opcional)
     shadowColor: '#000',
-    position:'absolute',
-    zIndex: 10,
+    position: 'absolute',
+    zIndex: 1,
+
   },
   logo: {
     width: 150,
