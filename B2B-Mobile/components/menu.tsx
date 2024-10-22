@@ -34,7 +34,6 @@ export const  Menu: React.FC<MenuProps> = ({ menuVisible, activeSection, handleP
 
 const styles = StyleSheet.create({
   menu: {
-    position: 'absolute',
     top: 60,
     right: 10,
     backgroundColor: '#fff',
@@ -47,8 +46,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    zIndex: 10,
-  },
+    position: 'absolute',  
+    },
   menuItem: {
     paddingVertical: 10,
   },

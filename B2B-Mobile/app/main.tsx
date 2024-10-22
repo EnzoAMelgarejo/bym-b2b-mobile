@@ -1,46 +1,45 @@
 // Main.tsx
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image } from 'react-native';
-import { ProductCard } from '../components/productCard';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ProductList from '../components/productList'; // Importa el componente
+import { MaterialIcons } from '@expo/vector-icons';
+
+
+
 
 export const Main = () => {
+
     const products = [
-        { title: 'Producto 1', image: require('../assets/images/lightexample.png'), description: 'Descripciónasegasñdfaslñfdasdfasdfasdfasdflasasdfasdfasf' },
-        { title: 'Producto 2', image: require('../assets/images/lightexample.png'), description: 'Descripciónasegasñdfaslñfdasdfasdfasdfasdflasasdfasdfasf' },
-        { title: 'Producto 3', image: require('../assets/images/lightexample.png'), description: 'Descripciónasegasñdfaslñfdasdfasdfasdfasdflasasdfasdfasf' },
+        { title: 'Producto 1', image: require('../assets/images/lightexample.png') },
+        { title: 'Producto 2', image: require('../assets/images/lightexample.png') },
+        { title: 'Producto 3', image: require('../assets/images/lightexample.png') },
         // Agrega más productos según sea necesario
     ];
+    
+    const selectedProducts = [
+        { title: 'Producto 1', image: require('../assets/images/lightexample.png') },
+        { title: 'Producto 2', image: require('../assets/images/lightexample.png') },
+        { title: 'Producto 3', image: require('../assets/images/lightexample.png') },
+        // Agrega más productos seleccionados según sea necesario
+    ];
+    
 
-    // Array para las categorías destacadas
     const categories = [
-        { icon: 'lightbulb-o' },
-        { icon: 'lightbulb-o' }, 
-        { icon: 'lightbulb-o' },
-        // Agrega más categorías si es necesario
+        { icon: 'lightbulb-outline' },
+        { icon: 'lightbulb-outline' },
+        { icon: 'lightbulb-outline' },
     ];
 
     return (
         <ScrollView style={styles.container}>
 
-            <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/Home01.png')} style={styles.firstImage} resizeMode='cover' />
-                <Image source={require('../assets/images/Rectangle.png')} style={styles.secondImage} resizeMode='cover' />
-                <Image source={require('../assets/images/Off.png')} style={styles.offImage} resizeMode='cover' />
+            <View style={styles.imageContainer01}>
+                <Image source={require('../assets/images/Home01.png')} style={styles.home01} resizeMode='cover' />
             </View>
 
             {/* Productos normales */}
             <View style={styles.section}>
-                <View style={styles.row}>
-                    {products.map((product, index) => (
-                        <ProductCard
-                            key={index}
-                            title={product.title}
-                            image={product.image}
-                            description={product.description}
-                        />
-                    ))}
-                </View>
+            <ProductList products={products} />
             </View>
 
             {/* Categorías destacadas */}
@@ -51,33 +50,22 @@ export const Main = () => {
                 <View style={styles.categoriesRow}>
                     {categories.map((category, index) => (
                         <View key={index} style={styles.categoryCard}>
-                            <FontAwesome name={category.icon} size={40} color="#00c400" />
+                            {/*@ts-ignore*/}
+                            <MaterialIcons name={category.icon} size={40} color="#00c400" />
                             <Text>foco led</Text>
                         </View>
                     ))}
                 </View>
             </View>
 
-            <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/Home02.png')} style={styles.thirdImage} resizeMode='cover' />
+            <View style={styles.imageContainer02}>
+                <Image source={require('../assets/images/Home02.png')} style={styles.home02} resizeMode='cover' />
             </View>
 
-            {/* Repetir la sección de productos */}
+            {/* Productos seleccionados para vos */}
             <View style={styles.section}>
-                <Pressable style={styles.button}>
-                    <Text style={styles.buttonText} numberOfLines={1} ellipsizeMode="tail">Seleccionados para vos...</Text>
-                </Pressable>
-                <View style={styles.row}>
-                    {products.map((product, index) => (
-                        <ProductCard
-                            key={index}
-                            title={product.title}
-                            image={product.image}
-                            description={product.description}
-                        />
-                    ))}
+                <ProductList title="Seleccionados para vos" products={selectedProducts} />
                 </View>
-            </View>
         </ScrollView>
     );
 };
@@ -85,9 +73,9 @@ export const Main = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
+        paddingVertical: 30,
     },
     section: {
-        marginBottom: 20,
     },
     sectionTitle: {
         marginVertical: 10,
@@ -117,7 +105,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 10,
     },
-    // Estilos del botón de categorías destacadas
+    // Estilos del botón de secciones
     button: {
         marginLeft: 10,
         backgroundColor: '#00C400', // Color del botón
@@ -143,34 +131,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 10,
     },
-    imageContainer: {
+    imageContainer01: {
+        width: '100%', // Ahora el contenedor ocupa todo el ancho de la pantalla
+        height: 250, // Puedes ajustar esta altura
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imageContainer02: {
         width: '100%', // Ahora el contenedor ocupa todo el ancho de la pantalla
         height: 300, // Puedes ajustar esta altura
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 20,
         marginBottom: 0,
         position: 'relative',
     },
-    firstImage: {
+    home01: {
         width: '100%',
-        height: 200, // Altura para la primera imagen
-        marginBottom: 0,
+        height: '100%', // Altura para la primera imagen
+        marginBottom: 30,
     },
-    secondImage: {
+    home02: {
         width: '100%',
-        height: 100, // Altura menor para la segunda imagen
-        marginBottom: 0,
-    },
-    thirdImage: {
-        width: '100%',
-        height: 200, // Altura para la primera imagen
-    },
-    offImage: {
-        width: '20%', // La tercera imagen será más pequeña en ancho
-        height: 60,  // Altura de la tercera imagen
-        position: 'absolute', // La clave para superponer
-        bottom: '8%',  // Se coloca sobre la segunda imagen, justo en la parte inferior
-        left: 38,
+        height: '70%', // Altura para la primera imagen
     }
 });

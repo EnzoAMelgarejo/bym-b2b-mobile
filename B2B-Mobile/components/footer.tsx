@@ -7,7 +7,7 @@ interface props {
     ourStory: string,
 }
 
-export const Footer: React.FC<props> = ({contact, catalog, ourStory}) => {
+export const Footer: React.FC<props> ({contact, catalog, ourStory}) => {
     <View style={styles.footer}>
         <View style={styles.contentContainer}>
         <Text></Text>

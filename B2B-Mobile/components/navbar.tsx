@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Pressable, StyleSheet, Image, Text } from 'react-native';
 import Constants from 'expo-constants';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { Menu } from './menu';
 
@@ -17,6 +17,7 @@ export default function Navbar() {
 
   const handlePress = (section: string) => {
     setActiveSection(section);
+    {/*@ts-ignore*/}
     router.push(section); // Navegar a la sección correspondiente
   };
 
@@ -31,7 +32,7 @@ export default function Navbar() {
       <View style={styles.rightSection}>
         <Link href="/myAccount" asChild>
           <Pressable style={styles.userIcon}>
-            <Icon name="user-circle" size={30} color="#00c400" />
+            <FontAwesome name="user-circle" size={30} color="#00c400" />
             <Text style={styles.textStyle}>Mi cuenta</Text>
           </Pressable>
         </Link>
@@ -43,7 +44,7 @@ export default function Navbar() {
         </Link>
 
         <Pressable onPress={toggleMenu}>
-          <Icon name="bars" size={30} color="#00c400" />
+          <FontAwesome name="bars" size={30} color="#00c400" />
         </Pressable>
       </View>
 
