@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image } from 'react-native';
 import ProductList from '../components/mainComponents/productList'; // Importa el componente
 import { MaterialIcons } from '@expo/vector-icons';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 
 
@@ -45,7 +46,8 @@ export const Main = () => {
             {/* Categorías destacadas */}
             <View style={styles.section}>
                 <Pressable style={styles.button}>
-                    <Text style={styles.buttonText} numberOfLines={1} ellipsizeMode="tail">Categorías destacadas...</Text>
+                    <Text style={styles.buttonText} numberOfLines={1} ellipsizeMode="tail">Categorias</Text>
+                    <SimpleLineIcons name="options" size={24} color="white" />
                 </Pressable>
                 <View style={styles.categoriesRow}>
                     {categories.map((category, index) => (
@@ -109,19 +111,20 @@ const styles = StyleSheet.create({
     // Estilos del botón de secciones
     button: {
         marginLeft: 10,
-        backgroundColor: '#00C400', // Color del botón
-        paddingVertical: 10,
-        paddingHorizontal: 15,
+        backgroundColor: '#00C400', 
+        paddingVertical: 5, 
+        paddingHorizontal: 10, 
         borderRadius: 8,
         marginVertical: 10,
-        alignSelf: 'flex-start', // Alinea el botón a la izquierda
-    },
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        alignSelf: 'flex-start', 
+        },
     buttonText: {
-        color: 'white', // Letras blancas
+        color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
-        width: '100%',
+        marginRight: 5,
     },
     // Iconos en Categorías destacadas
     iconButton: {

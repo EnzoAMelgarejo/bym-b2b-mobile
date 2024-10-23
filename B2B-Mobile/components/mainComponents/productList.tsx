@@ -1,7 +1,11 @@
 // ProductList.tsx
 import React from 'react';
 import { View, FlatList, Text, Pressable, StyleSheet } from 'react-native';
-import ProductCard from './productCard'; // Asegúrate de importar el componente
+import { useRoute } from '@react-navigation/native';
+import ProductCard from './productCard';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 interface Props {
   title?: string;
@@ -9,12 +13,34 @@ interface Props {
 }
 
 export const ProductList: React.FC<Props> = ({ title, products }) => {
+
+  const route = useRoute()
+  const isProductsPage = route.name === 'products'
+
     return (
         <View>
           {title &&
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>{title}</Text>
-          </Pressable>}
+          <View>
+
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>{title}</Text>
+              <SimpleLineIcons name="options" size={24} color="white" />
+            </Pressable>
+
+              {/* Botón 1 */}
+            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]}>
+              <Text style={styles.buttonText}>Relevancia</Text>
+            <MaterialIcons name="keyboard-arrow-down" size={24} color="white" />
+            </Pressable>
+
+              {/* Botón 2 */}
+            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]}>
+              <Text style={styles.buttonText}>Filtros</Text>
+              <Ionicons name="options-sharp" size={24} color="white" />
+            </Pressable>
+
+          </View>}
+
           <FlatList
             data={products}
             renderItem={({ item }) => (
@@ -24,7 +50,10 @@ export const ProductList: React.FC<Props> = ({ title, products }) => {
               />
             )}
             keyExtractor={(item, index) => index.toString()}
-            horizontal={true} // Cambiar a false para que las listas sean verticales
+            horizontal={!isProductsPage} // Cambia entre horizontal o vertical
+            numColumns={isProductsPage ? 2 : 1} // Muestra 2 columnas si es la página de productos, 1 en otras rutas
+            nestedScrollEnabled // Habilita el scroll anidado dentro de ScrollView
+
           />
         </View>
     );
@@ -34,19 +63,20 @@ export const ProductList: React.FC<Props> = ({ title, products }) => {
     {
       button: {
         marginLeft: 10,
-        backgroundColor: '#00C400', // Color del botón
-        paddingVertical: 10,
-        paddingHorizontal: 15,
+        backgroundColor: '#00C400', 
+        paddingVertical: 5, 
+        paddingHorizontal: 10, 
         borderRadius: 8,
         marginVertical: 10,
-        alignSelf: 'flex-start', // Alinea el botón a la izquierda
-    },
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        alignSelf: 'flex-start', 
+        },
     buttonText: {
-        color: 'white', // Letras blancas
+        color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
-        width: '100%',
+        marginRight: 5,
     },
     }
   )
