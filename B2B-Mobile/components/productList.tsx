@@ -27,18 +27,6 @@ export const ProductList: React.FC<Props> = ({ title, products }) => {
               <SimpleLineIcons name="options" size={24} color="white" />
             </Pressable>
 
-              {/* Botón 1 */}
-            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]}>
-              <Text style={styles.buttonText}>Relevancia</Text>
-            <MaterialIcons name="keyboard-arrow-down" size={24} color="white" />
-            </Pressable>
-
-              {/* Botón 2 */}
-            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]}>
-              <Text style={styles.buttonText}>Filtros</Text>
-              <Ionicons name="options-sharp" size={24} color="white" />
-            </Pressable>
-
           </View>}
 
           <FlatList

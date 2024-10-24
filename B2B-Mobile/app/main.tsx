@@ -1,29 +1,12 @@
 // Main.tsx
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image } from 'react-native';
-import ProductList from '../components/mainComponents/productList'; // Importa el componente
+import ProductList from '../components/productList'; // Importa el componente
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-
-
-
+import ProductsData from '../data/productData';
 
 export const Main = () => {
-
-    const products = [
-        { title: 'Producto 1', image: require('../assets/images/lightexample.png') },
-        { title: 'Producto 2', image: require('../assets/images/lightexample.png') },
-        { title: 'Producto 3', image: require('../assets/images/lightexample.png') },
-        // Agrega más productos según sea necesario
-    ];
-    
-    const selectedProducts = [
-        { title: 'Producto 1', image: require('../assets/images/lightexample.png') },
-        { title: 'Producto 2', image: require('../assets/images/lightexample.png') },
-        { title: 'Producto 3', image: require('../assets/images/lightexample.png') },
-        // Agrega más productos seleccionados según sea necesario
-    ];
-    
 
     const categories = [
         { icon: 'lightbulb-outline' },
@@ -40,7 +23,7 @@ export const Main = () => {
 
             {/* Productos normales */}
             <View style={styles.section}>
-            <ProductList products={products} />
+            <ProductList products={ProductsData} />
             </View>
 
             {/* Categorías destacadas */}
@@ -66,7 +49,7 @@ export const Main = () => {
 
             {/* Productos seleccionados para vos */}
             <View style={[styles.section, {marginBottom: 130,}]}>
-                <ProductList title="Seleccionados para vos" products={selectedProducts} />
+                <ProductList title="Seleccionados para vos" products={ProductsData} />
             </View>
         </ScrollView>
     );
