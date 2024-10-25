@@ -1,51 +1,79 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import filterCategoriesData from '../data/categoryFilter';
 
-interface FilterMenuProps {
-  onSelectFilter?: (filter: string) => void;
-}
+const FiltersMenu = () => {
+  const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: boolean }>({});
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ onSelectFilter }) => {
-    
+  const handleCheckboxChange = (category: string, element: string) => {
+    const key = `${category}-${element}`;
+    setSelectedFilters({
+      ...selectedFilters,
+      [key]: !selectedFilters[key],  // Alterna entre seleccionado y no seleccionado
+    });
+  };
+
   return (
-    <View style={styles.filterMenu}>
-      <Pressable onPress={() => onSelectFilter?.('Precio ascendente')}>
-        <Text style={styles.filterOption}>Precio ascendente</Text>
-      </Pressable>
-      <Pressable onPress={() => onSelectFilter?.('Precio descendente')}>
-        <Text style={styles.filterOption}>Precio descendente</Text>
-      </Pressable>
-      <Pressable onPress={() => onSelectFilter?.('Más vendido')}>
-        <Text style={styles.filterOption}>Más vendido</Text>
-      </Pressable>
-      <Pressable onPress={() => onSelectFilter?.('Mejor valorado')}>
-        <Text style={styles.filterOption}>Mejor valorado</Text>
-      </Pressable>
-    </View>
+
+    <ScrollView style={styles.menu} nestedScrollEnabled={true} contentContainerStyle={{ flexGrow: 1 }}>
+      {filterCategoriesData.map((category, index) => (
+        <View key={category.id} style={styles.categoryContainer}>
+          <Text style={styles.categoryTitle}>{category.name}</Text>
+          {category.elements.map((element) => {
+            const key = `${category.name}-${element}`;
+            return (
+              <View key={key} style={styles.elementItem}>
+                {/* Agregar las CheckBox PENDIENTE*/}
+                <Text style={styles.elementText}>{element}</Text>
+              </View>
+            );
+          })}
+
+          {index < filterCategoriesData.length - 1 && (
+            <View style={styles.separator} />  //Separadores
+          )}
+
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-    filterMenu: {
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        position: 'absolute',
-        zIndex: 10,
-        top: 45,
-        left: 200,
-   },
-    
-  filterOption: {
-    paddingVertical: 10,
+  separator: {
+    height: 1,
+    backgroundColor: '#707070',
+    marginVertical: 10, // Espaciado vertical
+  },
+  menu: {
+    padding: 10,
+    position: 'absolute',
+    zIndex: 10,
+    backgroundColor: '#ffff',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#707070',
+    left: 120,
+    top: 45,
+    maxHeight: 400,
+  },
+  categoryContainer: {
+    marginBottom: 20,
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  elementItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  elementText: {
+    marginLeft: 10,
     fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
 });
 
-export default FilterMenu;
+export default FiltersMenu;
