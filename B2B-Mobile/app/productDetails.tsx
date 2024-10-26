@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Pressable, ScrollView } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, StyleSheet, Image, Pressable, ScrollView, Animated } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { Dimensions } from "react-native";
+import { InfoBox } from "@/components/productDetails/infoBox";
+
+// Obtener el ancho de la pantalla
+const screenWidth = Dimensions.get('window').width;
 
 export const ProductDetails = () => {
 
@@ -22,28 +27,29 @@ export const ProductDetails = () => {
         sizes: ["S", "M", "L", "XL", "XXL"],
    };
 
-    // Nueva lógica para la oferta por tiempo limitado
-    const [timeLeft, setTimeLeft] = useState(3600); // 1 hora en segundos
-    const [stock, setStock] = useState(100);
+   const [activeSection, setActiveSection] = useState(0);
+   const scrollViewRef = useRef(null);
 
-    useEffect(() => {
-    const timer = setInterval(() => {
-            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-        }, 1000);
-        return () => clearInterval(timer);
-    }, []);
+   // Controla el movimiento del indicador
+   const animatedIndicator = new Animated.Value(0);
 
-    const formatTime = (seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    };
+   // Función para actualizar el scroll y el indicador
+   const handleNavPress = (index) => {
+       setActiveSection(index);
+       scrollViewRef.current.scrollTo({ x: index * screenWidth, animated: true }); // Ajusta el valor del scroll según el tamaño de la pantalla
+
+       // Animación del indicador
+       Animated.timing(animatedIndicator, {
+           toValue: index,
+           duration: 300,
+           useNativeDriver: false,
+       }).start();
+   };
 
     return (
         <ScrollView style={styles.container}>
 
-            {/*seccion de producto con */}
+            {/*seccion de producto con detalles */}
 
             <View style={styles.productContainer}>
                 <Image source={require('../assets/images/lightbulb.png')} style={styles.productImage} />
@@ -128,46 +134,66 @@ export const ProductDetails = () => {
                 </View>
             </View>
 
-
             {/*seccion de infoBox*/}
+            <InfoBox></InfoBox>
 
-            <View style={styles.infoBox}>
-                <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Disponibilidad:</Text>
-                    <Text style={[styles.infoValue, stock > 0 ? styles.inStock : styles.outOfStock]}>
-                        {stock > 0 ? "InStock" : "No"}
-                    </Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>SKU:</Text>
-                    <Text style={styles.infoValue}>14235</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Categoría:</Text>
-                    <Text style={styles.infoValue}>Iluminación</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text style={[styles.infoLabel, {color:'#00C400', textDecorationLine:'underline'}]}>Preguntanos</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>Compartir en:</Text>
-                    <View style={styles.socialIconsRow}>
-                        <FontAwesome name="facebook" size={20} color="#3b5998" />
-                        <FontAwesome name="twitter" size={20} color="#1da1f2" />
-                        <FontAwesome name="instagram" size={20} color="#c32aa3" />
-                    </View>
-                </View>
-                <View style={styles.offerRow}>
-                    <Text style={styles.offerText}>Oferta por tiempo limitado!</Text>
-                    <Text style={styles.infoLabel}>Esta oferta vence en: {formatTime(timeLeft)}</Text>
-                </View>
-                <View style={styles.stockContainer}>
-                    <Text style={styles.stockText}>Cantidad: {stock}/100</Text>
-                    <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${(stock / 100) * 100}%` }]} />
-                    </View>
-                </View>
+            {/* Barra de navegación horizontal */}
+            <View style={styles.navBar}>
+                {["Descripción", "Información adicional", "Reseñas"].map((item, index) => (
+                    <Pressable
+                        key={index}
+                        style={styles.navItem}
+                        onPress={() => handleNavPress(index)}
+                    >
+                        <Text style={[styles.navText, activeSection === index && styles.activeNavText]}>
+                            {item}
+                        </Text>
+                    </Pressable>
+                ))}
             </View>
+
+            {/* Indicador de la sección activa */}
+            <View style={styles.indicatorContainer}>
+                <Animated.View
+                    style={[
+                        styles.indicator,
+                        {
+                            width: "33%", // Indicador para cada sección (1/3 del ancho)
+                            transform: [
+                                {
+                                    translateX: animatedIndicator.interpolate({
+                                        inputRange: [0, 1, 2],
+                                        outputRange: [0, screenWidth / 3, (screenWidth / 3) * 2], // Valores numéricos para translateX
+                                    }),
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            </View>
+
+            {/* Secciones de contenido */}
+            <ScrollView
+                ref={scrollViewRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={(event) => {
+                    const index = Math.round(event.nativeEvent.contentOffset.x / screenWidth); // Calcula la sección actual
+                    setActiveSection(index);
+                }}
+            >
+                <View style={styles.section}>
+                    <Text>Contenido de la Descripción del Producto...</Text>
+                </View>
+                <View style={styles.section}>
+                    <Text>Contenido de Información Adicional...</Text>
+                </View>
+                <View style={styles.section}>
+                    <Text>Contenido de Reseñas del Producto...</Text>
+                </View>
+            </ScrollView>
+           
         </ScrollView>
     );
 };
@@ -321,57 +347,41 @@ const styles = StyleSheet.create({
     heartButton: {
         marginLeft: 10,
     },
-    infoBox: {
+    //Seccion de infoNav
+    navBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: "#fff",
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
         marginTop: 20,
-        padding: 15,
-        borderRadius: 8,
-        backgroundColor: "#f8f8f8",
     },
-    infoRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 8,
+    navItem: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 10,
     },
-    infoLabel: {
-        fontSize: 13,
+    navText: {
+        fontSize: 16,
+        fontWeight: "bold",
         color: "#555",
     },
-    infoValue: {
-        fontSize: 13,
+    activeNavText: {
+        color: "#EF8216",  // Color naranja para la sección activa
     },
-    inStock: {
-        color: "#00C400",
+    indicatorContainer: {
+        height: 3,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
-    outOfStock: {
-        color: "red",
-    },
-    socialIconsRow: {
-        flexDirection: "row",
-        gap: 5,
-    },
-    offerRow: {
-        marginVertical: 10,
-    },
-    offerText: {
-        color: "#00C400",
-        fontWeight: "bold",
-    },
-    stockContainer: {
-        marginTop: 10,
-    },
-    stockText: {
-        fontSize: 13,
-    },
-    progressBar: {
-        height: 8,
-        backgroundColor: "#ddd",
-        borderRadius: 5,
-        marginTop: 5,
-    },
-    progressFill: {
-        height: "100%",
+    indicator: {
+        width: 0, // Inicia en 0, se actualizará dinámicamente
+        height: 3,
         backgroundColor: "#EF8216",
-        borderRadius: 5,
+    },
+    section: {
+        padding: 15,
     },
 });
 
