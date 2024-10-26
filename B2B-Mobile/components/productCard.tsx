@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 interface PropsCard {
     title: string;
@@ -16,7 +17,8 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
     };
   
     return (
-      <View style={styles.card}>
+      <Link href='/productDetails' style={styles.card}>
+      <View>
         <Image source={image} style={styles.image} />
         <View style={styles.descriptionContainer}>
           <Text style={styles.title}>{title}</Text>
@@ -36,6 +38,7 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
           </Pressable>
         </View>
       </View>
+      </Link>
     );
   };
 
