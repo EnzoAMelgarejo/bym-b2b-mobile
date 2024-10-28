@@ -41,8 +41,9 @@ const FiltersMenu = () => {
 
 const styles = StyleSheet.create({
   separator: {
-    height: 1,
-    backgroundColor: '#707070',
+    height: 2,
+    borderRadius: 5,
+    backgroundColor: "#f0f0f0",
     marginVertical: 10, // Espaciado vertical
   },
   menu: {

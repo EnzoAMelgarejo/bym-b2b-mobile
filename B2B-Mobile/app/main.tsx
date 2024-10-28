@@ -95,13 +95,14 @@ const styles = StyleSheet.create({
     button: {
         marginLeft: 10,
         backgroundColor: '#00C400', 
-        paddingVertical: 5, 
+        paddingVertical: 10, 
         paddingHorizontal: 10, 
         borderRadius: 8,
         marginVertical: 10,
         flexDirection: 'row', 
         alignItems: 'center', 
-        alignSelf: 'flex-start', 
+        alignSelf: 'flex-start',
+        gap: 25, 
         },
     buttonText: {
         color: 'white',
