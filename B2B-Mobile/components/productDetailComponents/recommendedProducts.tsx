@@ -7,20 +7,18 @@ import lightbulbImage from "../../assets/images/lightbulb.png";
 type Product = {
   id: number;
   title: string;
-  description: string;
   visits: number;
   quantity: number;
   price: number;
   image: any; // Cambiado a `any` para aceptar importaciones de imágenes
 };
 
-export const RecommendedProducts: React.FC<Product> = ({ id, title, description, visits, quantity, price, image }) => {
+export const RecommendedProducts: React.FC<Product> = ({ id, title, visits, quantity, price, image }) => {
   
     const [products, setProducts] = useState<Product[]>([
         {
           id: 1,
           title: "Producto 1",
-          description: "Descripción breve del producto.",
           visits: 4,
           quantity: 1,
           price: 33.33,
@@ -29,7 +27,6 @@ export const RecommendedProducts: React.FC<Product> = ({ id, title, description,
         {
           id: 2,
           title: "Producto 2",
-          description: "Descripción breve del producto.",
           visits: 3,
           quantity: 1,
           price: 33.33,
@@ -38,7 +35,6 @@ export const RecommendedProducts: React.FC<Product> = ({ id, title, description,
         {
           id: 3,
           title: "Producto 3",
-          description: "Descripción breve del producto.",
           visits: 5,
           quantity: 1,
           price: 33.33,
