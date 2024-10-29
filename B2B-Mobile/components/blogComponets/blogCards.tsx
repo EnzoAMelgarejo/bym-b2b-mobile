@@ -1,0 +1,99 @@
+// components/BlogCard.tsx
+import React from "react";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { Link } from "expo-router";
+
+type BlogPost = {
+  id: number;
+  title: string;
+  description: string;
+  author: string;
+  date: string;
+  commentsCount: number;
+  likesCount: number;
+  coverImage: any;
+};
+
+const BlogCard = ({ post }: { post: BlogPost }) => (
+  <Link href={`/blog/${post.id}`} asChild>
+    <Pressable style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
+      <Image source={post.coverImage} style={styles.image} />
+      <View style={styles.cardContent}>
+        <View style={styles.row}>
+          <Text style={styles.author}>{post.author}</Text>
+          <Text style={styles.separator}>|</Text>
+          <Text style={styles.date}>{post.date}</Text>
+          <Text style={styles.separator}>|</Text>
+          <Text style={styles.comments}>
+            <FontAwesome name="comments" size={14} color="#888" /> {post.commentsCount}
+          </Text>
+          <Text style={styles.separator}>|</Text>
+          <Text style={styles.likes}>
+            <FontAwesome name="thumbs-up" size={14} color="#888" /> {post.likesCount}
+          </Text>
+        </View>
+        <Text style={styles.title}>{post.title}</Text>
+        <Text style={styles.description}>{post.description}</Text>
+      </View>
+    </Pressable>
+  </Link>
+);
+
+const styles = StyleSheet.create({
+  card: {
+    marginVertical: 10,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+    elevation: 3,
+  },
+  cardPressed: {
+    opacity: 0.8,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  cardContent: {
+    padding: 15,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  author: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+  },
+  separator: {
+    marginHorizontal: 5,
+    color: "#888",
+  },
+  date: {
+    fontSize: 12,
+    color: "#888",
+  },
+  comments: {
+    fontSize: 12,
+    color: "#888",
+  },
+  likes: {
+    fontSize: 12,
+    color: "#888",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+    color: "#333",
+  },
+  description: {
+    fontSize: 14,
+    color: "#555",
+  },
+});
+
+export default BlogCard;
