@@ -1,121 +1,145 @@
 // app/auth/Register.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import Footer from '../components/footer';
-const Garanty = () => {
-  const [name, setName] = useState('');
+
+const FormRequest = () => {
+  const router = useRouter();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [productType, setProductType] = useState('');
+  const [documentNumber, setDocumentNumber] = useState('');
+  const [invoiceNumber, setInvoiceNumber] = useState('');
+  const [ruc, setRuc] = useState('');
+  const [serialNumber, setSerialNumber] = useState('');
 
   const handleRegister = () => {
-    // Validaciones
-    if (!name || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !phone || !productType || !documentNumber || !invoiceNumber || !ruc || !serialNumber) {
       Alert.alert("Error", "Todos los campos son obligatorios");
-      return;
-    }
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Las contraseñas no coinciden");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       Alert.alert("Error", "Correo electrónico inválido");
       return;
     }
+    if (!/^\d+$/.test(phone)) {
+      Alert.alert("Error", "Teléfono inválido. Solo se permiten números.");
+      return;
+    }
 
-    // Lógica para registrar al usuario (conectarse al backend)
-    Alert.alert("Registro exitoso", `Bienvenido, ${name}`);
+    router.push("/activateGaranty");
   };
 
   return (
     <ScrollView>
-    <View style={styles.container}>
+      <View style={styles.container}>
         <Pressable style={styles.buttonTitle}>
-            <Text style={{color: '#ffff', fontSize: 16,}}>Datos de garantia</Text>
-            <SimpleLineIcons name="options" size={20} color="white" />
+          <Text style={{ color: '#ffff', fontSize: 16 }}>Datos de garantía</Text>
+          <SimpleLineIcons name="options" size={20} color="white" />
         </Pressable>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre"
-        value={name}
-        onChangeText={setName}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Nombre</Text>
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            onChangeText={setFirstName}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+          <Text style={styles.label}>Apellido</Text>
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            onChangeText={setLastName}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
+          <Text style={styles.label}>Mail</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          
+          <Text style={styles.label}>Teléfono</Text>
+          <TextInput
+            style={styles.input}
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
 
-        <View style={styles.buttonContainer}>
-            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]} onPress={handleRegister}>
-                <Text style={{color: '#ffff', fontSize: 14,}}>
-                   Adjuntar factura
-                </Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={handleRegister}>
-                <Text style={{color: '#ffff', fontSize: 14,}}>
-                   Tomar fotografia
-                </Text>
-            </Pressable>
+          <Text style={styles.label}>Tipo de producto</Text>
+          <TextInput
+            style={styles.input}
+            value={productType}
+            onChangeText={setProductType}
+          />
+
+          <Text style={styles.label}>Número de documento</Text>
+          <TextInput
+            style={styles.input}
+            value={documentNumber}
+            onChangeText={setDocumentNumber}
+          />
+
+          <Text style={styles.label}>Número de factura</Text>
+          <TextInput
+            style={styles.input}
+            value={invoiceNumber}
+            onChangeText={setInvoiceNumber}
+          />
+
+          <Text style={styles.label}>RUC de compra</Text>
+          <TextInput
+            style={styles.input}
+            value={ruc}
+            onChangeText={setRuc}
+          />
+
+          <Text style={styles.label}>Número de serie</Text>
+          <TextInput
+            style={styles.input}
+            value={serialNumber}
+            onChangeText={setSerialNumber}
+          />
         </View>
 
-        <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
+        <View style={styles.buttonContainer}>
+          <Pressable style={[styles.button, { backgroundColor: '#FF9C2A' }]} onPress={handleRegister}>
+            <Text style={{ color: '#ffff', fontSize: 14 }}>Adjuntar factura</Text>
+          </Pressable>
 
-        <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
+          <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
+            <View style={styles.cameraButton}>
+              <Ionicons name="camera" size={20} color="white" />
+              <Text style={{ color: '#ffff', fontSize: 14, marginLeft: 5 }}>Tomar fotografía</Text>
+            </View>
+          </Pressable>
+        </View>
 
-        <Pressable style={[styles.button, {marginLeft: '25%'}]} onPress={handleRegister}>
-            <Text style={{color: '#ffff', fontSize: 16,}}>
-                Enviar
-            </Text>
-        </Pressable>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
+            <Text style={{ color: '#ffff', fontSize: 16, marginLeft: 5 }}>Enviar</Text>
+          </Pressable>
+        </View>
 
         <Footer />
-
-    </View>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    padding: 10,
     backgroundColor: '#fff',
-    paddingVertical: 150,
+    marginVertical: 130,
   },
   title: {
     fontSize: 24,
@@ -124,44 +148,56 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000'
   },
+  label: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
   input: {
-    height: 50,
+    height: 30,
+    backgroundColor: '#f0f0f0',
     borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
     fontSize: 16,
+  },
+  formContainer: {
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20,
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
-    justifyContent: 'center',
-    height: 80,
+    justifyContent: 'center'
   },
   button: {
     backgroundColor: '#00C400',  
-    width: '50%',
+    width: '45%',
     height: 40,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 15,
-    },
-    buttonTitle: {
-        display: 'flex',
-        gap: 15,
-        width: 190,
-        height: 40,
-        backgroundColor: '#00C400', 
-        padding: 10, 
-        borderRadius: 8,
-        marginVertical: 15,
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        alignSelf: 'flex-start', 
-    }
+  },
+  buttonTitle: {
+    display: 'flex',
+    gap: 25,
+    width: 'auto',
+    height: 40,
+    backgroundColor: '#00C400', 
+    padding: 10, 
+    borderRadius: 8,
+    marginVertical: 15,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    alignSelf: 'flex-start', 
+  },
+  cameraButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  }
 });
 
-export default Garanty;
+export default FormRequest;

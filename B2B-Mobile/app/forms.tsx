@@ -4,85 +4,87 @@ import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 
 import { SimpleLineIcons } from '@expo/vector-icons';
 import Footer from '../components/footer';
 
-const FormRequest= () => {
-  const [name, setName] = useState('');
+const FormRequest = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleRegister = () => {
     // Validaciones
-    if (!name || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !phone) {
       Alert.alert("Error", "Todos los campos son obligatorios");
-      return;
-    }
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Las contraseñas no coinciden");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       Alert.alert("Error", "Correo electrónico inválido");
       return;
     }
+    if (!/^\d+$/.test(phone)) {
+      Alert.alert("Error", "Teléfono inválido. Solo se permiten números.");
+      return;
+    }
 
     // Lógica para registrar al usuario (conectarse al backend)
-    Alert.alert("Registro exitoso", `Bienvenido, ${name}`);
+    Alert.alert("Registro exitoso", `Bienvenido, ${firstName} ${lastName}`);
   };
 
   return (
     <ScrollView>
-    <View style={styles.container}>
+      <View style={styles.container}>
         <Pressable style={styles.buttonTitle}>
-            <Text style={{color: '#ffff', fontSize: 16,}}>Solicitud de formularios</Text>
-            <SimpleLineIcons name="options" size={20} color="white" />
+          <Text style={{ color: '#ffff', fontSize: 16 }}>Solicitud de formularios</Text>
+          <SimpleLineIcons name="options" size={20} color="white" />
         </Pressable>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre"
-        value={name}
-        onChangeText={setName}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.label}>Nombre</Text>
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            onChangeText={setFirstName}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+          <Text style={styles.label}>Apellido</Text>
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            onChangeText={setLastName}
+          />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
+          <Text style={styles.label}>Mail</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          
+          <Text style={styles.label}>Teléfono</Text>
+          <TextInput
+            style={styles.input}
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+          />
+        </View>
+
         <View style={styles.buttonContainer}>
-            <Pressable style={[styles.button, {backgroundColor:'#FF9C2A'}]} onPress={handleRegister}>
-                <Text style={{color: '#ffff', fontSize: 14,}}>
-                    Descarga tu formulario
-                </Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={handleRegister}>
-                <Text style={{color: '#ffff', fontSize: 14,}}>
-                   Carga tu formulario
-                </Text>
-            </Pressable>
+          <Pressable style={[styles.button, { backgroundColor: '#FF9C2A' }]} onPress={handleRegister}>
+            <Text style={{ color: '#ffff', fontSize: 14 }}>
+              Enviar formulario
+            </Text>
+          </Pressable>
+
+          <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
+            <Text style={{ color: '#ffff', fontSize: 14 }}>
+              Carga tu formulario
+            </Text>
+          </Pressable>
         </View>
 
         <Footer />
-
-    </View>
+      </View>
     </ScrollView>
   );
 };
@@ -90,9 +92,9 @@ const FormRequest= () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    padding: 10,
     backgroundColor: '#fff',
-    marginVertical: 150,
+    marginVertical: 130,
   },
   title: {
     fontSize: 24,
@@ -101,14 +103,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000'
   },
+  label: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
   input: {
-    height: 50,
+    height: 30,
+    backgroundColor: '#f0f0f0', // Color de fondo gris claro
     borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
     fontSize: 16,
+  },
+  formContainer: {
+    padding: 10,
+    marginTop: 20,
+    marginBottom: 20, // Espacio entre el formulario y los botones
   },
   buttonContainer: {
     display: 'flex',
@@ -118,26 +129,26 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#00C400',  
-    width: '50%',
+    width: '45%', // Ajustado para un mejor diseño
     height: 40,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 15,
-    },
-    buttonTitle: {
-        display: 'flex',
-        gap: 25,
-        width: 250,
-        height: 40,
-        backgroundColor: '#00C400', 
-        padding: 10, 
-        borderRadius: 8,
-        marginVertical: 15,
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        alignSelf: 'flex-start', 
-    }
+  },
+  buttonTitle: {
+    display: 'flex',
+    gap: 25,
+    width: 'auto',
+    height: 40,
+    backgroundColor: '#00C400', 
+    padding: 10, 
+    borderRadius: 8,
+    marginVertical: 15,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    alignSelf: 'flex-start', 
+  }
 });
 
 export default FormRequest;

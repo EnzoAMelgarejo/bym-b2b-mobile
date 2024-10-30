@@ -1,6 +1,6 @@
 // components/BlogMenu/BlogMenu.tsx
 import React from "react";
-import { View, Modal, ScrollView, FlatList, StyleSheet, Pressable, Image, Text } from "react-native";
+import { View, Modal, ScrollView, StyleSheet, Pressable, Image, Text } from "react-native";
 import PopularPost from "./popularPost";
 import SubscribeSection from "./subscribe";
 import InstagramSection from "./instagramSection";
@@ -35,11 +35,9 @@ const BlogMenu: React.FC<BlogMenuProps> = ({ modalVisible, toggleModal }) => (
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Browse Categories:</Text>
-          <FlatList
-            data={categories}
-            renderItem={({ item }) => <Text style={styles.categoryItem}>{item}</Text>}
-            keyExtractor={(item) => item}
-          />
+          {categories.map((item, index) => (
+            <Text key={index} style={styles.categoryItem}>{item}</Text>
+          ))}
           <View style={styles.separator} />
 
           <View style={styles.titleContainer}>
