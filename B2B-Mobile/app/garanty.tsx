@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import Footer from './footer';
+import Footer from '../components/footer';
 const Garanty = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

@@ -4,7 +4,7 @@ import CheckoutSummary from "@/components/cartComponents/checkoutSummary";
 import lightbulbImage from "../assets/images/lightbulb.png";
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from "@expo/vector-icons";
-import Footer from "./footer";
+import Footer from "../components/footer";
 
 type Product = {
   id: number;

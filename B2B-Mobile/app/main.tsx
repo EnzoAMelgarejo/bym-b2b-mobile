@@ -5,7 +5,7 @@ import ProductList from '../components/productList'; // Importa el componente
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ProductsData from '../data/productData';
-import Footer from './footer';
+import Footer from '../components/footer';
 
 export const Main = () => {
 

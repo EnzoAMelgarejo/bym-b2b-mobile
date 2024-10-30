@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import FilterMenu  from '@/components/filterMenu';
 import ProductsData from '../data/productData';
-import Footer from './footer';
+import Footer from '../components/footer';
 
 
 const Products = () => {

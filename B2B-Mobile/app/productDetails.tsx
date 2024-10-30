@@ -6,7 +6,7 @@ import { InfoBox } from "@/components/productDetailComponents/infoBox";
 import { InfoNav } from "@/components/productDetailComponents/infoNav";
 import { ProductDetailsCard } from "@/components/productDetailComponents/productDetailsCard";
 import { RecommendedProducts } from "@/components/productDetailComponents/recommendedProducts";
-import Footer from "./footer";
+import Footer from "../components/footer";
 
 
 
