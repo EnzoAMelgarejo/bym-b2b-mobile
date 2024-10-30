@@ -5,6 +5,7 @@ import ProductList from '../components/productList'; // Importa el componente
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ProductsData from '../data/productData';
+import Footer from './footer';
 
 export const Main = () => {
 
@@ -51,6 +52,9 @@ export const Main = () => {
             <View style={[styles.section, {marginBottom: 130,}]}>
                 <ProductList title="Seleccionados para vos" products={ProductsData} />
             </View>
+
+            <Footer />
+
         </ScrollView>
     );
 };
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         backgroundColor: '#f0f0f0',
-        borderRadius: 50, // Hace que la tarjeta sea circular
+        borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 10,
@@ -112,22 +116,22 @@ const styles = StyleSheet.create({
     },
     // Iconos en Categorías destacadas
     iconButton: {
-        backgroundColor: '#2e2e2e', // Fondo del icono
+        backgroundColor: '#2e2e2e',
         padding: 10,
-        borderRadius: 50, // Bordes redondeados para un estilo circular
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 10,
     },
     imageContainer01: {
-        width: '100%', // Ahora el contenedor ocupa todo el ancho de la pantalla
-        height: 250, // Puedes ajustar esta altura
+        width: '100%',
+        height: 250,
         justifyContent: 'center',
         alignItems: 'center',
     },
     imageContainer02: {
-        width: '100%', // Ahora el contenedor ocupa todo el ancho de la pantalla
-        height: 300, // Puedes ajustar esta altura
+        width: '100%', 
+        height: 300,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 0,
@@ -135,11 +139,11 @@ const styles = StyleSheet.create({
     },
     home01: {
         width: '100%',
-        height: '100%', // Altura para la primera imagen
+        height: '100%',
         marginBottom: 30,
     },
     home02: {
         width: '100%',
-        height: '70%', // Altura para la primera imagen
+        height: '70%',
     }
 });

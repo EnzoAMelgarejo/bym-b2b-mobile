@@ -4,6 +4,7 @@ import CheckoutSummary from "@/components/cartComponents/checkoutSummary";
 import lightbulbImage from "../assets/images/lightbulb.png";
 import { Ionicons } from '@expo/vector-icons';
 import { SimpleLineIcons } from "@expo/vector-icons";
+import Footer from "./footer";
 
 type Product = {
   id: number;
@@ -87,6 +88,8 @@ const Cart: React.FC = () => {
 
         <CheckoutSummary></CheckoutSummary>
 
+        <Footer />
+
     </View>
     </ScrollView>
   );
@@ -95,7 +98,8 @@ const Cart: React.FC = () => {
 const styles = StyleSheet.create({
   cartContainer: {
     padding: 10,
-    marginTop: 100,
+    marginTop: 80,
+    flex: 1,
   },
   button: {
     backgroundColor: '#00C400', 

@@ -1,10 +1,23 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import Footer from "./footer";
 
 export default function FindUs() {
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Donde Comprar</Text>
+
+            <Footer />
+
         </View>
     )
 }
+
+const styles = StyleSheet.create(
+    {
+        container: {
+            marginVertical: 150,
+            padding: 10,
+        }
+    }
+)

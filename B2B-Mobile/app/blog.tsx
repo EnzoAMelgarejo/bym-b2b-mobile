@@ -4,6 +4,7 @@ import BlogList from "@/components/blogComponets/blogList";
 import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import BlogMenu from "@/components/blogComponets/blogFilter";
+import Footer from "./footer";
 
 const Blog = () => {
 
@@ -33,6 +34,8 @@ const Blog = () => {
             <BlogList />
 
             <BlogMenu modalVisible={modalVisible} toggleModal={toggleModal} />
+
+            <Footer />
 
         </View>
 

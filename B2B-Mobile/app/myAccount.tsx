@@ -1,7 +1,8 @@
 // app/auth/Register.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import Footer from './footer';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -29,6 +30,7 @@ const Register = () => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
         <Pressable style={styles.buttonTitle}>
             <Text style={{color: '#ffff', fontSize: 16,}}>Registro de Usuario</Text>
@@ -67,11 +69,15 @@ const Register = () => {
       />
 
       <Pressable style={styles.button} onPress={handleRegister}>
-            <Text style={{color: '#ffff', fontSize: 16,}}>
-                Registrar Usuario
-            </Text>
-        </Pressable>
+        <Text style={{color: '#ffff', fontSize: 16,}}>
+          Registrar Usuario
+        </Text>
+      </Pressable>
+
+      <Footer />
+
     </View>
+    </ScrollView>
   );
 };
 
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     backgroundColor: '#fff',
-    paddingVertical: 400,
+    marginVertical: 150,
   },
   title: {
     fontSize: 24,

@@ -6,6 +6,7 @@ import { InfoBox } from "@/components/productDetailComponents/infoBox";
 import { InfoNav } from "@/components/productDetailComponents/infoNav";
 import { ProductDetailsCard } from "@/components/productDetailComponents/productDetailsCard";
 import { RecommendedProducts } from "@/components/productDetailComponents/recommendedProducts";
+import Footer from "./footer";
 
 
 
@@ -31,6 +32,9 @@ export const ProductDetails = () => {
 
         {/*Productos Recomendados*/}
         <RecommendedProducts></RecommendedProducts>
+
+        <Footer />
+
       </View>
     </ScrollView>
   );
@@ -42,6 +46,7 @@ const styles = StyleSheet.create({
     padding: 10, 
     paddingVertical: 140, 
     backgroundColor: "#fff",
+    flex: 1,
   },
   button: {
     backgroundColor: '#00C400', 
