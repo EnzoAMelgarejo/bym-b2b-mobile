@@ -25,6 +25,7 @@ const SocialIcons: React.FC = () => (
 // Estilos
 const styles = StyleSheet.create({
   iconRow: {
+    padding: 10,
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center',

@@ -66,7 +66,7 @@ const Products = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 150,
+    paddingVertical: 100,
     paddingBottom: 0,
   },
   grid: {

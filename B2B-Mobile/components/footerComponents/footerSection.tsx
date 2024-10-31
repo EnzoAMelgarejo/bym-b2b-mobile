@@ -23,9 +23,8 @@ const FooterSection: React.FC<Section> = ({ title, items }) => (
 const styles = StyleSheet.create({
   column: {
     flex: 1,
-    paddingHorizontal: 8,
+    padding: 10,
     marginBottom: 16,
-    alignItems: 'center', // Centrar contenido
   },
   title: {
     fontSize: 16,

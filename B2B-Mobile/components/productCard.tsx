@@ -1,24 +1,24 @@
+// ProductCard.tsx
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 interface PropsCard {
     title: string;
     image: any;
-  }
+}
   
-export 
-const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
+export const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
     const [rating, setRating] = useState(0);
-  
+    const router = useRouter();
+
     const handleRating = (newRating: number) => {
       setRating(newRating);
     };
-  
+
     return (
-      <Link href='/productDetails' style={styles.card}>
-      <View>
+      <Pressable style={styles.card} onPress={() => router.push('/productDetails')}>
         <Image source={image} style={styles.image} />
         <View style={styles.descriptionContainer}>
           <Text style={styles.title}>{title}</Text>
@@ -37,58 +37,57 @@ const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
             <Text style={styles.buyButtonText}>Comprar</Text>
           </Pressable>
         </View>
-      </View>
-      </Link>
+      </Pressable>
     );
   };
 
-  const styles = StyleSheet.create({
-    card: {
-      backgroundColor: '#f0f0f0',
-      padding: 10,
-      margin: 10,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      elevation: 3,
-      flex: 1, // Para ocupar espacio igual en la columna
-      alignItems: 'center',
-    },
-    image: {
-      width: 100,
-      height: 100,
-      borderRadius: 8,
-      resizeMode: 'contain',
-    },
-    descriptionContainer: {
-      marginTop: 10,
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginVertical: 2,
-      textAlign: 'center',
-    },
-    starsContainer: {
-      flexDirection: 'row',
-      marginVertical: 8,
-    },
-    buyButton: {
-      backgroundColor: '#EF8216',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      marginTop: 10,
-    },
-    buyButtonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    columnWrapper: {
-      justifyContent: 'space-between', // Espaciado entre columnas
-    },
-  });
-  
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    elevation: 3,
+    flex: 1,
+    alignItems: 'center',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    resizeMode: 'contain',
+  },
+  descriptionContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: 2,
+    textAlign: 'center',
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginVertical: 8,
+  },
+  buyButton: {
+    backgroundColor: '#EF8216',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buyButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+  },
+});
+
 export default ProductCard;

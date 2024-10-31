@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: Constants.statusBarHeight,
     alignItems: 'center',
-    borderWidth: 1,          // Grosor del borde
-    borderColor: '#ccc',     // Color del borde (puedes cambiarlo por otro si prefieres)
+    borderWidth: 1,   
+    borderColor: '#ccc',     
     shadowColor: '#000',
     position: 'absolute',
     zIndex: 1,

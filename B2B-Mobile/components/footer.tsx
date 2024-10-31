@@ -48,7 +48,7 @@ const Footer: React.FC = () => (
 const styles = StyleSheet.create({
   footerContainer: {
     width: '100%',
-    padding: 16,
+    padding: 10,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',

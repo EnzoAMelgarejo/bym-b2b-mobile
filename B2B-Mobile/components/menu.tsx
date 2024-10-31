@@ -8,7 +8,6 @@ const sections = [
   { title: 'Garantía', path: '/garanty' },
   { title: 'Formularios', path: '/forms' },
   { title: 'Contactos', path: '/contacts' },
-  { title: 'Blog', path: '/blog' },
 ];
 
 interface MenuProps {

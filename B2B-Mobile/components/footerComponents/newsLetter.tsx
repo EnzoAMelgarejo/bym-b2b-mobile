@@ -26,8 +26,8 @@ const Newsletter: React.FC = () => (
 const styles = StyleSheet.create({
   newsletter: {
     flex: 2,
-    paddingHorizontal: 25,
-    alignItems: 'center', // Centrar contenido
+    padding: 10,
+    marginLeft: 10,
   },
   title: {
     fontSize: 16,
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   paymentIcons: {
     flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: 10,
   },
   icon: {

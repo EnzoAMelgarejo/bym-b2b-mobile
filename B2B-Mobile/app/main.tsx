@@ -49,7 +49,7 @@ export const Main = () => {
             </View>
 
             {/* Productos seleccionados para vos */}
-            <View style={[styles.section, {marginBottom: 130,}]}>
+            <View style={styles.section}>
                 <ProductList title="Seleccionados para vos" products={ProductsData} />
             </View>
 
@@ -61,8 +61,7 @@ export const Main = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
-        paddingVertical: 130,
+        marginTop: 100,
     },
     section: {
         paddingVertical: 20,
