@@ -11,10 +11,16 @@ interface PropsCard {
   
 export const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
     const [rating, setRating] = useState(0);
+    const [isAdded, setIsAdded] = useState(false);
     const router = useRouter();
 
     const handleRating = (newRating: number) => {
-      setRating(newRating);
+        setRating(newRating);
+    };
+
+    const handlePress = () => {
+        setIsAdded(!isAdded);
+        alert(isAdded ? 'Producto removido del carrito' : 'Producto añadido al carrito');
     };
 
     return (
@@ -33,13 +39,18 @@ export const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
               </Pressable>
             ))}
           </View>
-          <Pressable style={styles.buyButton} onPress={() => alert('Producto añadido al carrito')}>
-            <Text style={styles.buyButtonText}>Comprar</Text>
+          <Pressable
+            style={[styles.buyButton, isAdded && styles.addedButton]}
+            onPress={handlePress}
+          >
+            <Text style={styles.buyButtonText}>
+              {isAdded ? 'Añadido' : 'Comprar'}
+            </Text>
           </Pressable>
         </View>
       </Pressable>
     );
-  };
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -79,6 +90,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     marginTop: 10,
+  },
+  addedButton: {
+    backgroundColor: '#00C400',
   },
   buyButtonText: {
     color: '#fff',

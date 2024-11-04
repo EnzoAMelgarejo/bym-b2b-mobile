@@ -64,12 +64,12 @@ const CheckoutSummary: React.FC = () => {
 
 const styles = StyleSheet.create({
   summaryContainer: {
-    alignSelf: "flex-end", // Para alinear la card al extremo derecho
+    alignSelf: "center", // Para alinear la card al extremo derecho
     padding: 15,
     marginVertical: 20,
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
-    width: "90%", // Ancho ajustable
+    width: "100%", // Ancho ajustable
   },
   title: {
     fontSize: 18,
