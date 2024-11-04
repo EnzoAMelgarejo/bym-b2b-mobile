@@ -7,7 +7,6 @@ const sections = [
   { title: 'Donde Comprar', path: '/findUs' },
   { title: 'Garantía', path: '/garanty' },
   { title: 'Formularios', path: '/forms' },
-  { title: 'Contactos', path: '/contacts' },
 ];
 
 interface MenuProps {
