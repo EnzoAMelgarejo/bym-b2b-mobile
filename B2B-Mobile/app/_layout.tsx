@@ -15,7 +15,7 @@ export default function Layout() {
   }, []);
 
   // Verifica si la ruta actual es '/login' para ocultar el Navbar
-  const isLoginScreen = segments[0] === 'login';
+  const isLoginScreen = segments[0] === 'login' || segments[0] === 'register';
 
   return (
     <View style={{ flex: 1 }}> 

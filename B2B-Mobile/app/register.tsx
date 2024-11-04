@@ -1,60 +1,71 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert, Pressable, Text } from 'react-native';
+import { View, StyleSheet, Alert, Pressable, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import InputField from '@/components/loginComponents/inputFiled';
 import PasswordInput from '@/components/loginComponents/passwordInput';
 import Checkbox from '@/components/loginComponents/checkbox';
-import LoginButton from '@/components/loginComponents/loginbutton';
 import SocialButtonLogin from '@/components/loginComponents/socialButtonLogin';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [username, setUsername] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [rememberPassword, setRememberPassword] = useState<boolean>(false);
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleLogin = () => {
-    if (username === 'user' && password === 'password') {
-      Alert.alert('Login exitoso');
-      router.push('/main');
+  const handleRegister = () => {
+    if (username && email && password && confirmPassword) {
+      if (password !== confirmPassword) {
+        Alert.alert('Las contraseñas no coinciden');
+      } else if (!termsAccepted) {
+        Alert.alert('Por favor, acepta los términos y condiciones');
+      } else {
+        Alert.alert('Registro exitoso');
+        router.push('/main');
+      }
     } else {
-      Alert.alert('Usuario o contraseña incorrectos');
+      Alert.alert('Por favor, completa todos los campos');
     }
   };
 
   return (
+    
     <View style={styles.container}>
       <View style={styles.loginCard}>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable style={styles.buttonTitle}>
-          <Text style={{ color: '#fff', fontSize: 16 }}>Inicio de sesión</Text>
+          <Text style={{ color: '#fff', fontSize: 16 }}>Crear cuenta</Text>
           <SimpleLineIcons name="options" size={20} color="white" />
         </Pressable>
 
         <InputField label="Usuario" value={username} onChangeText={setUsername} />
+        <InputField label="Email" value={email} onChangeText={setEmail} />
         <PasswordInput
-          label='Contraseña'
+          label="Contraseña"
           value={password}
           onChangeText={setPassword}
           showPassword={showPassword}
           onToggleShowPassword={() => setShowPassword(!showPassword)}
         />
-        
-        <Checkbox
-          label="Guardar contraseña"
-          checked={rememberPassword}
-          onToggle={() => setRememberPassword(!rememberPassword)}
+        <PasswordInput
+          label="Confirmar Contraseña"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          showPassword={showPassword}
+          onToggleShowPassword={() => setShowPassword(!showPassword)}
         />
 
-        <Pressable onPress={() => Alert.alert('Recuperación de contraseña')}>
-          <Text style={styles.forgotPassword}>Olvidaste tu contraseña?</Text>
-        </Pressable>
+        <Checkbox
+          label="Acepto los términos y condiciones"
+          checked={termsAccepted}
+          onToggle={() => setTermsAccepted(!termsAccepted)}
+        />
 
-        <LoginButton onPress={handleLogin} />
-
-        <Pressable style={styles.createAccountButton} onPress={() => router.push('/register')}>
-          <Text style={styles.createAccountText}>Crear cuenta</Text>
+        <Pressable style={styles.registerButton} onPress={handleRegister}>
+          <Text style={styles.registerButtonText}>Registrarse</Text>
         </Pressable>
 
         <View style={styles.orSeparator}>
@@ -63,8 +74,13 @@ const Login: React.FC = () => {
           <View style={styles.separatorLine} />
         </View>
 
-        <SocialButtonLogin title="Iniciar sesión con Facebook" onPress={() => Alert.alert('Facebook')} />
-        <SocialButtonLogin title="Iniciar sesión con Google" onPress={() => Alert.alert('Google')} />
+        <SocialButtonLogin title="Regístrate con Facebook" onPress={() => Alert.alert('Facebook')} />
+        <SocialButtonLogin title="Regístrate con Google" onPress={() => Alert.alert('Google')} />
+
+        <Pressable style={styles.loginButton} onPress={() => router.push('/login')}>
+          <Text style={styles.loginButtonText}>Ya tengo una cuenta</Text>
+        </Pressable>
+      </ScrollView>
       </View>
     </View>
   );
@@ -76,6 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#A5A5A5',
+    paddingVertical: 50,
   },
   loginCard: {
     width: '90%',
@@ -101,10 +118,17 @@ const styles = StyleSheet.create({
     bottom: 15,
     alignSelf: 'flex-start',
   },
-  forgotPassword: {
-    color: '#00C400',
-    textAlign: 'right',
+  registerButton: {
+    backgroundColor: '#00C400',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
     marginVertical: 15,
+  },
+  registerButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   orSeparator: {
     flexDirection: 'row',
@@ -121,18 +145,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#888',
   },
-  createAccountButton: {
-    backgroundColor: '#00C400',
-    borderRadius: 8,
+  loginButton: {
     marginTop: 10,
     paddingVertical: 10,
     alignItems: 'center',
   },
-  createAccountText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  loginButtonText: {
+    color: '#00C400',
+    fontSize: 16,
   },
 });
 
-export default Login;
+export default Register;
