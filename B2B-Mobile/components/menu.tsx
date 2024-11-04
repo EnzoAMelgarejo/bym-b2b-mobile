@@ -34,7 +34,7 @@ export const  Menu: React.FC<MenuProps> = ({ menuVisible, activeSection, handleP
 
 const styles = StyleSheet.create({
   menu: {
-    top: 60,
+    top: 80,
     right: 10,
     backgroundColor: '#fff',
     borderWidth: 1,
