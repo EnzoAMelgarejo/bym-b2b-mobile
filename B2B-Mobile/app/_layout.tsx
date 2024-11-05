@@ -3,8 +3,8 @@ import { useRouter, useSegments } from "expo-router";
 import { View } from "react-native";
 import { Slot } from 'expo-router';
 import Navbar from "@/components/navbar";
-import { StatusBar } from "react-native";
 import { UserProvider } from "@/components/userContext";
+import { StatusBar } from "react-native";
 
 export default function Layout() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Layout() {
   return (
     <View style={{ flex: 1 }}> 
       <UserProvider>
-        <StatusBar barStyle={'dark-content'} translucent={false} />
+        <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false} hidden={false}/>
         {/* Solo muestra el Navbar si no estás en la pantalla de inicio de sesión */}
         {!isLoginScreen && <Navbar />}
         <Slot />
