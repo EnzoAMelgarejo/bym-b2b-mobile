@@ -5,11 +5,13 @@ import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { Menu } from './menu';
+import { useUser } from './userContext';
 
 export default function Navbar() {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const router = useRouter();
+  const { userName, role } = useUser(); // Obtener el nombre y rol del usuario
 
   const toggleMenu = () => {
     setMenuVisible((prev) => !prev);
@@ -17,8 +19,20 @@ export default function Navbar() {
 
   const handlePress = (section: string) => {
     setActiveSection(section);
-    {/*@ts-ignore*/}
-    router.push(section); // Navegar a la sección correspondiente
+    router.push(section);
+  };
+
+  const getUserRoleLabel = () => {
+    switch (role) {
+      case 'cliente':
+        return 'Cliente';
+      case 'vendedor':
+        return 'Vendedor';
+      case 'vendedorRepresentante':
+        return 'Vendedor (Representante)';
+      default:
+        return '';
+    }
   };
 
   return (
@@ -33,7 +47,10 @@ export default function Navbar() {
         <Link href="/myAccount" asChild>
           <Pressable style={styles.userIcon}>
             <FontAwesome name="user-circle" size={30} color="#00c400" />
-            <Text style={styles.textStyle}>Mi cuenta</Text>
+            <View>
+              <Text style={styles.textStyle}>{userName}</Text>
+              <Text style={styles.roleStyle}>{getUserRoleLabel()}</Text>
+            </View>
           </Pressable>
         </Link>
 
@@ -51,27 +68,23 @@ export default function Navbar() {
       <Menu menuVisible={menuVisible} activeSection={activeSection} handlePress={handlePress} />
     </View>
   );
-};
-
-// Resto del código permanece igual...
-
+}
 
 const styles = StyleSheet.create({
   navbar: {
     width: '100%',
     backgroundColor: '#fff',
-    padding: 10,
-    display: 'flex',
+    paddingHorizontal: 15,
+    paddingTop: Constants.statusBarHeight,
+    paddingBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: Constants.statusBarHeight,
     alignItems: 'center',
-    borderWidth: 1,   
-    borderColor: '#ccc',     
+    borderWidth: 1,
+    borderColor: '#ccc',
     shadowColor: '#000',
     position: 'absolute',
     zIndex: 1,
-
   },
   logo: {
     width: 150,
@@ -89,12 +102,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   userIcon: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 15, // Espacio entre los íconos
+    marginLeft: 15,
   },
   textStyle: {
-    marginLeft: 5, // Espacio entre el ícono y el texto
+    marginLeft: 5,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  roleStyle: {
+    fontSize: 12,
+    color: '#888',
+    marginLeft: 5,
   },
 });

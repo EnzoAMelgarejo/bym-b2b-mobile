@@ -7,7 +7,6 @@ const sections = [
   { title: 'Donde Comprar', path: '/findUs' },
   { title: 'Garantía', path: '/garanty' },
   { title: 'Formularios', path: '/forms' },
-  { title: 'Contactos', path: '/contacts' },
 ];
 
 interface MenuProps {
@@ -34,7 +33,7 @@ export const  Menu: React.FC<MenuProps> = ({ menuVisible, activeSection, handleP
 
 const styles = StyleSheet.create({
   menu: {
-    top: 60,
+    top: 80,
     right: 10,
     backgroundColor: '#fff',
     borderWidth: 1,

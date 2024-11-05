@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
   },
+  addedButton: {
+    backgroundColor: '#00C400',
+  },
   buyButtonText: {
     color: '#fff',
     fontWeight: 'bold',
