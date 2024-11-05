@@ -1,35 +1,33 @@
 // data/posts.js
-export const posts = [
-    {
-      id: 1,
-      title: "Introducción a React Native",
-      description: "Una breve introducción a los conceptos básicos de React Native.",
-      author: "John Doe",
-      date: "2024-10-01",
-      commentsCount: 5,
-      likesCount: 25,
-      coverImage: require("../assets/images/Home02.png"),
-    },
-    {
-      id: 2,
-      title: "Introducción a React Native",
-      description: "Una breve introducción a los conceptos básicos de React Native.",
-      author: "John Doe",
-      date: "2024-10-01",
-      commentsCount: 5,
-      likesCount: 25,
-      coverImage: require("../assets/images/Home02.png"),
-    },
-    {
-      id: 3,
-      title: "Introducción a React Native",
-      description: "Una breve introducción a los conceptos básicos de React Native.",
-      author: "John Doe",
-      date: "2024-10-01",
-      commentsCount: 5,
-      likesCount: 25,
-      coverImage: require("../assets/images/Home02.png"),
-    },
-    // Agrega más publicaciones aquí
-  ];
+import { environment } from "@/configuration/environment";
+
+const baseUrl =`${environment.SERVER_URL}/api/controller/blog`;
+const params = new URLSearchParams({
+  one: 'false',
+});
+
+// Construir la URL con los parámetros de consulta
+const url = `${baseUrl}?${params.toString()}`;
+console.log(url);
+export const posts = fetch(url, {
+
   
+  method: 'GET',
+  headers: {
+      'Content-Type': 'application/json',
+  }
+}) //
+.then(response => {
+  if (!response.ok) {
+      throw new Error('Error en la solicitud');
+  }
+  return response.json();
+})
+.then(data => {
+  console.log('Datos recibidos:', data); //
+})
+.catch(error => {
+  console.error('Hubo un problema con la solicitud fetch:', error.message, error);
+});
+
+console.log(posts,"<--post")

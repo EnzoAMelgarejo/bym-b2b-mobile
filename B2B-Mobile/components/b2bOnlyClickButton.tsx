@@ -1,54 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image, FlatList } from 'react-native';
-import ProductList from '../components/productList';
-import B2bOnlyClickButton from '@/components/b2bOnlyClickButton';
+import ProductList from './productList';
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { useRoute } from '@react-navigation/native';
+
 import ProductsData from '../data/productData';
-import Footer from '../components/footer';
+import Footer from './footer';
 import { environment } from '@/configuration/environment';
-import { GlobalProvider } from './context/GlobalContext';
-import Carousel from 'react-native-snap-carousel';
-import B2bOnlyClick from '@/components/b2bOnlyClick';
-import { B2bCarousel } from './b2bCarousel';
-import B2bImagesProm from './b2bImagesProm';
-//
-export const Main = () => {
 
 
-    return (
-            <ScrollView style={styles.container}>
-                <View style={styles.imageContainer01}>
-                    <B2bCarousel />
+export const b2bOnlyClickButton: React.FC = () => {
+    const [categories, setCategories] = useState([]); // Define el estado para las categorías
+    const [b2bOnlyClick, setOnlyClick] = useState([])
+    useEffect(() => {
+        // Llama a getCategories y actualiza el estado cuando los datos estén listos
+        const fetchCategories = async () => {
+            const data = await getCategories();
+            setCategories(data);
+        };
+        const fetchOnlyClick = async () => {
+            const data = await getOnlyClick();
+            setOnlyClick(data)
+        }
+        fetchOnlyClick();
+        fetchCategories();
+    }, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
+    if (b2bOnlyClick.length) {
+        return (
+            <View style={styles.section}>
+                <Pressable style={styles.button}>
+                    <Text style={styles.buttonText} numberOfLines={1} ellipsizeMode="tail">Categorias</Text>
+                    <SimpleLineIcons name="options" size={24} color="white" />
+                </Pressable>
+                <View style={styles.categoriesRow}>
+                    <FlatList
+                        data={categories}
+                        renderItem={({ item }) => (
+                            <View key={item.id} style={styles.categoryCard}>
+                                <Image source={{ uri: item.img }} style={styles.categoryImage} />
+                                <Text>{item.name}</Text>
+                            </View>
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal={true} // Cambia entre horizontal o vertical
+                        nestedScrollEnabled // Habilita el scroll anidado dentro de ScrollView
+                    />
+
                 </View>
-
-                {/* Productos normales */}
-                <View style={styles.section}>
-                </View>
-
-                {/* Categorías destacadas */}
-                <View>
-                    <B2bOnlyClickButton />
-                </View>
-
-                    <B2bImagesProm />
-
-                {/* Productos seleccionados para vos */}
-                <View style={styles.section}>
-                    <B2bOnlyClick  />
-                </View>
-
-                <Footer />
-            </ScrollView>
-    );
-};
+            </View>)
+    }
+}
 
 const styles = StyleSheet.create({
     categoryImage: {
         width: 100,
         height: 100,
         borderRadius: 8,
-        resizeMode: 'contain',
+        resizeMode: 'cover'
     },
     container: {
         marginTop: 100,
@@ -136,10 +145,6 @@ const styles = StyleSheet.create({
         height: '70%',
     }
 });
-
-
-
-//
 async function getCategories() {
     const baseUrl = `${environment.SERVER_URL}/api/controller/category`;
     const params = new URLSearchParams({
@@ -168,4 +173,37 @@ async function getCategories() {
         return [];
     }
 }
-//
+
+async function getOnlyClick() {
+    const baseUrl = `${environment.SERVER_URL}/api/controller/promotion`;
+    const params = new URLSearchParams({
+        one: 'false',
+        type: 'ONLY_CLICK_GROUP_1',
+        orderField: 'order',
+        orderDir: 'asc'
+    });
+
+    const url = `${baseUrl}?${params.toString()}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
+        }
+
+        const data = await response.json();
+        console.log('Datos recibidos:', data);
+        return data;
+    } catch (error) {
+        console.error('Hubo un problema con la solicitud fetch:', error.message, error);
+        return [];
+    }
+}
+
+export default b2bOnlyClickButton
