@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
+// Ajusta las propiedades para incluir categorías y comentarios
 type BlogPost = {
   id: number;
   title: string;
@@ -13,6 +14,8 @@ type BlogPost = {
   commentsCount: number;
   likesCount: number;
   coverImage: any;
+  category?: { name: string }; // Categoría opcional
+  comments?: Array<{ content: string; author: string }>; // Comentarios opcionales
 };
 
 const BlogCard = ({ post }: { post: BlogPost }) => (
@@ -35,6 +38,8 @@ const BlogCard = ({ post }: { post: BlogPost }) => (
         </View>
         <Text style={styles.title}>{post.title}</Text>
         <Text style={styles.description}>{post.description}</Text>
+        {/* Mostrar la categoría si está presente */}
+        {post.category && <Text style={styles.category}>Categoría: {post.category.name}</Text>}
       </View>
     </Pressable>
   </Link>
@@ -93,6 +98,11 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: "#555",
+  },
+  category: {
+    fontSize: 12,
+    color: "#777",
+    marginTop: 5,
   },
 });
 

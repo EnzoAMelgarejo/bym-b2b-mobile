@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
+import { Link } from "expo-router"; // Importa Link de expo-router
 
 const CheckoutSummary: React.FC = () => {
   const [country, setCountry] = useState("");
@@ -55,27 +56,28 @@ const CheckoutSummary: React.FC = () => {
       </View>
       <View style={styles.separator} />
 
-      <Pressable style={styles.purchaseButton}>
+      {/* Reemplaza el botón con Link */}
+      <Link href="/boughtScreen" style={styles.purchaseButton}>
         <Text style={styles.purchaseButtonText}>Realizar compra</Text>
-      </Pressable>
+      </Link>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   summaryContainer: {
-    alignSelf: "center", // Para alinear la card al extremo derecho
+    alignSelf: "center", // Para centrar el componente
     padding: 15,
     marginVertical: 20,
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
-    width: "100%", // Ancho ajustable
+    width: "100%", // Ancho completo
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   separator: {
     borderBottomWidth: 1,
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 8,
     marginVertical: 5,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   updateButton: {
     backgroundColor: "#000",
@@ -120,12 +122,15 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
+    justifyContent: "center",
     marginTop: 20,
   },
   purchaseButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
