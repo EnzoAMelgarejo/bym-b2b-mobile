@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { InfoBox } from "@/components/productDetailComponents/infoBox";
 import { InfoNav } from "@/components/productDetailComponents/infoNav";
-import { ProductDetailsCard } from "@/components/productDetailComponents/productDetailsCard";
+import ProductDetailCard from "@/components/productDetailComponents/productDetailsCard";
 import { RecommendedProducts } from "@/components/productDetailComponents/recommendedProducts";
 import Footer from "../components/footer";
 
@@ -22,7 +22,7 @@ export const ProductDetails = () => {
         </Pressable>
 
         {/*Detalles de la compra*/}
-        <ProductDetailsCard />
+        <ProductDetailCard />
 
         {/*Seccion de caja informativa*/}
         <InfoBox />

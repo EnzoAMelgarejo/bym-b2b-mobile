@@ -1,54 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image, FlatList } from 'react-native';
-import ProductList from '../components/productList';
-import B2bOnlyClickButton from '@/components/b2bOnlyClickButton';
+import ProductList from './productList';
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { useRoute } from '@react-navigation/native';
+import { GlobalContext } from '@/app/context/GlobalContext';
 import ProductsData from '../data/productData';
-import Footer from '../components/footer';
+import Footer from './footer';
 import { environment } from '@/configuration/environment';
-import { GlobalProvider } from './context/GlobalContext';
-import Carousel from 'react-native-snap-carousel';
-import B2bOnlyClick from '@/components/b2bOnlyClick';
-import { B2bCarousel } from './b2bCarousel';
-import B2bImagesProm from './b2bImagesProm';
-//
-export const Main = () => {
 
 
-    return (
-            <ScrollView style={styles.container}>
-                <View style={styles.imageContainer01}>
-                    <B2bCarousel />
-                </View>
+export const B2bOnlyClick: React.FC = () => {
+    const [b2bOnlyClick, setOnlyClick] = useState([])
 
-                {/* Productos normales */}
-                <View style={styles.section}>
-                </View>
 
-                {/* Categorías destacadas */}
-                <View>
-                    <B2bOnlyClickButton />
-                </View>
+    useEffect(() => {
+        const fetchOnlyClick = async () => {
+            const data = await getOnlyClick();
+            setOnlyClick(data)
+        }
+        fetchOnlyClick();
+    }, []); // El array vacío asegura que solo se ejecute una vez al montar el componente
+    if (b2bOnlyClick.length) {
+        return (
 
-                    <B2bImagesProm />
-
-                {/* Productos seleccionados para vos */}
-                <View style={styles.section}>
-                    <B2bOnlyClick  />
-                </View>
-
-                <Footer />
-            </ScrollView>
-    );
-};
+            <View style={styles.section}>
+                {b2bOnlyClick.map((elem) => (
+                    <ProductList title="Seleccionados para vos" b2bOnlyClick={elem} key={elem.id}/>
+                ))}
+            </View>)
+    }
+}
 
 const styles = StyleSheet.create({
     categoryImage: {
         width: 100,
         height: 100,
         borderRadius: 8,
-        resizeMode: 'contain',
+        resizeMode: 'cover'
     },
     container: {
         marginTop: 100,
@@ -137,13 +126,13 @@ const styles = StyleSheet.create({
     }
 });
 
-
-
-//
-async function getCategories() {
-    const baseUrl = `${environment.SERVER_URL}/api/controller/category`;
+async function getOnlyClick() {
+    const baseUrl = `${environment.SERVER_URL}/api/controller/promotion`;
     const params = new URLSearchParams({
         one: 'false',
+        type: 'ONLY_CLICK_GROUP_2',
+        orderField: 'order',
+        orderDir: 'asc'
     });
 
     const url = `${baseUrl}?${params.toString()}`;
@@ -168,4 +157,5 @@ async function getCategories() {
         return [];
     }
 }
-//
+
+export default B2bOnlyClick

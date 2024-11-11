@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
+// Ajusta las propiedades para incluir categorías y comentarios
 type BlogPost = {
   id: number;
   title: string;
@@ -12,33 +13,48 @@ type BlogPost = {
   date: string;
   commentsCount: number;
   likesCount: number;
-  coverImage: any;
+  img: string; // Cambiar 'any' a 'string' para representar una URL de imagen
+  category?: { name: string }; // Categoría opcional
+  comments?: Array<{ content: string; author: string }>; // Comentarios opcionales
 };
 
-const BlogCard = ({ post }: { post: BlogPost }) => (
-  <Link href={`/blog/${post.id}`} asChild>
-    <Pressable style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
-      <Image source={post.coverImage} style={styles.image} />
-      <View style={styles.cardContent}>
-        <View style={styles.row}>
-          <Text style={styles.author}>{post.author}</Text>
-          <Text style={styles.separator}>|</Text>
-          <Text style={styles.date}>{post.date}</Text>
-          <Text style={styles.separator}>|</Text>
-          <Text style={styles.comments}>
-            <FontAwesome name="comments" size={14} color="#888" /> {post.commentsCount}
-          </Text>
-          <Text style={styles.separator}>|</Text>
-          <Text style={styles.likes}>
-            <FontAwesome name="thumbs-up" size={14} color="#888" /> {post.likesCount}
-          </Text>
+const BlogCard = ({ post }: { post: BlogPost }) => {
+  // Hacer un console.log para ver el valor de uri
+  console.log("uri:", post.img);
+
+  return (
+    <Link href={`/blog/${post.id}`} asChild>
+      <Pressable style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
+        {/* Modificación aquí: pasar el coverImage como un objeto con la propiedad uri */}
+        <Image
+  source={{ uri: post.img }}
+  style={styles.image}
+  onError={(e) => console.error("Error loading image:", e.nativeEvent.error)}
+/>
+
+        <View style={styles.cardContent}>
+          <View style={styles.row}>
+            <Text style={styles.author}>{post.author}</Text>
+            <Text style={styles.separator}>|</Text>
+            <Text style={styles.date}>{post.date}</Text>
+            <Text style={styles.separator}>|</Text>
+            <Text style={styles.comments}>
+              <FontAwesome name="comments" size={14} color="#888" /> {post.commentsCount}
+            </Text>
+            <Text style={styles.separator}>|</Text>
+            <Text style={styles.likes}>
+              <FontAwesome name="thumbs-up" size={14} color="#888" /> {post.likesCount}
+            </Text>
+          </View>
+          <Text style={styles.title}>{post.title}</Text>
+          <Text style={styles.description}>{post.description}</Text>
+          {/* Mostrar la categoría si está presente */}
+          {post.category && <Text style={styles.category}>Categoría: {post.category.name}</Text>}
         </View>
-        <Text style={styles.title}>{post.title}</Text>
-        <Text style={styles.description}>{post.description}</Text>
-      </View>
-    </Pressable>
-  </Link>
-);
+      </Pressable>
+    </Link>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -93,6 +109,11 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     color: "#555",
+  },
+  category: {
+    fontSize: 12,
+    color: "#777",
+    marginTop: 5,
   },
 });
 

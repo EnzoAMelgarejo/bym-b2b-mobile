@@ -5,51 +5,50 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 interface PropsCard {
-    title: string;
-    image: any;
+  title: string;
+  image: any;
+  product: {
+    code:string;
+    id:string;
+  };
 }
-  
-export const ProductCard: React.FC<PropsCard> = ({ title, image }) => {
-    const [rating, setRating] = useState(0);
-    const [isAdded, setIsAdded] = useState(false);
-    const router = useRouter();
 
-    const handleRating = (newRating: number) => {
-        setRating(newRating);
-    };
+export const ProductCard: React.FC<PropsCard> = ({ title, image, product }) => {
+  const [rating, setRating] = useState(0);
+  const [imageSource,setImageSource]=useState({uri:image})
+  const router = useRouter();
 
-    const handlePress = () => {
-        setIsAdded(!isAdded);
-        alert(isAdded ? 'Producto removido del carrito' : 'Producto añadido al carrito');
-    };
+  const handleRating = (newRating: number) => {
+    setRating(newRating);
+  };
 
-    return (
-      <Pressable style={styles.card} onPress={() => router.push('/productDetails')}>
-        <Image source={image} style={styles.image} />
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.title}>{title}</Text>
-          <View style={styles.starsContainer}>
-            {Array.from({ length: 5 }, (_, index) => (
-              <Pressable key={index} onPress={() => handleRating(index + 1)}>
-                <MaterialIcons
-                  name={index < rating ? 'star' : 'star-border'}
-                  size={24}
-                  color={index < rating ? '#00C400' : '#ccc'}
-                />
-              </Pressable>
-            ))}
-          </View>
-          <Pressable
-            style={[styles.buyButton, isAdded && styles.addedButton]}
-            onPress={handlePress}
-          >
-            <Text style={styles.buyButtonText}>
-              {isAdded ? 'Añadido' : 'Comprar'}
-            </Text>
-          </Pressable>
+  const handleImageError = () => {
+    setImageSource(require('../assets/images/Image-not-found.png'));
+  };
+  //
+  return (
+    <Pressable style={styles.card} onPress={() => router.push(`/productDetails?id=${product.id}&code=${product.code}`)}>
+      <Image onError={handleImageError}
+        source={imageSource} style={styles.image} />
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.title} numberOfLines={2}>{title.trim()}</Text>
+        <View style={styles.starsContainer}>
+          {Array.from({ length: 5 }, (_, index) => (
+            <Pressable key={index} onPress={() => handleRating(index + 1)}>
+              <MaterialIcons
+                name={index < rating ? 'star' : 'star-border'}
+                size={24}
+                color={index < rating ? '#00C400' : '#ccc'}
+              />
+            </Pressable>
+          ))}
         </View>
-      </Pressable>
-    );
+        <Pressable style={styles.buyButton} onPress={() => alert('Producto añadido al carrito')}>
+          <Text style={styles.buyButtonText}>Comprar</Text>
+        </Pressable>
+      </View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -62,13 +61,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 3,
     flex: 1,
+    width:200,
+    height:300,
     alignItems: 'center',
   },
   image: {
     width: 100,
     height: 100,
     borderRadius: 8,
-    resizeMode: 'contain',
+    resizeMode: 'contain' //
   },
   descriptionContainer: {
     marginTop: 10,
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 2,
     textAlign: 'center',
+    overflow: 'hidden'
   },
   starsContainer: {
     flexDirection: 'row',
