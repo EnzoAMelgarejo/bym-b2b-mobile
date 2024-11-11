@@ -8,9 +8,9 @@ import { Link } from "expo-router";
 type BlogPost = {
   id: number;
   title: string;
-  description: string;
-  author: string;
-  date: string;
+  content: string;
+  userId: {name: string};
+  createdAt: string;
   commentsCount: number;
   likesCount: number;
   img: string; // Cambiar 'any' a 'string' para representar una URL de imagen
@@ -34,9 +34,9 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
 
         <View style={styles.cardContent}>
           <View style={styles.row}>
-            <Text style={styles.author}>{post.author}</Text>
+            <Text style={styles.author}>{post.userId.name}</Text>
             <Text style={styles.separator}>|</Text>
-            <Text style={styles.date}>{post.date}</Text>
+            <Text style={styles.date}>{post.createdAt}</Text>
             <Text style={styles.separator}>|</Text>
             <Text style={styles.comments}>
               <FontAwesome name="comments" size={14} color="#888" /> {post.commentsCount}
@@ -47,7 +47,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             </Text>
           </View>
           <Text style={styles.title}>{post.title}</Text>
-          <Text style={styles.description}>{post.description}</Text>
+          <Text style={styles.description}>{post.content}</Text>
           {/* Mostrar la categoría si está presente */}
           {post.category && <Text style={styles.category}>Categoría: {post.category.name}</Text>}
         </View>

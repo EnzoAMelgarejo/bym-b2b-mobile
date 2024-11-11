@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
 
 interface InstagramSectionProps {
-  instagramImages: any[]; // Puedes usar ImageSourcePropType para mayor precisión
+  instagramImages: any[]; // Lista de URLs de imágenes
 }
 
 const InstagramSection: React.FC<InstagramSectionProps> = ({ instagramImages }) => (
@@ -11,7 +11,7 @@ const InstagramSection: React.FC<InstagramSectionProps> = ({ instagramImages }) 
     <Text style={styles.modalTitle}>Instagram</Text>
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {instagramImages.map((image, index) => (
-        <Image key={index} source={image} style={styles.instagramImage} />
+        <Image key={index} source={{ uri: image }} style={styles.instagramImage} />
       ))}
     </ScrollView>
   </View>

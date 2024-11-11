@@ -1,137 +1,128 @@
-// components/BlogMenu/BlogMenu.tsx
-import React from "react";
-import { View, Modal, ScrollView, StyleSheet, Pressable, Image, Text } from "react-native";
-import PopularPost from "./popularPost";
-import SubscribeSection from "./subscribe";
-import InstagramSection from "./instagramSection";
-import { AntDesign } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, ActivityIndicator, Pressable } from "react-native";
+import { environment } from "@/configuration/environment";
 
 interface BlogMenuProps {
-  modalVisible: boolean;
-  toggleModal: () => void;
+  selectedCategory: string | null;
+  onSelectedCategory: (category: string | null) => void;
 }
 
-const categories = ["Elemento 1", "Elemento 2", "Elemento 3"];
-const post = {
-  image: require("../../assets/images/Home02.png"),
-  date: "2024-10-25",
-  title: "Título del Post",
-};
-const popularPosts = [
-  { id: 1, image: require("../../assets/images/Home02.png"), title: "Popular Post 1" },
-  { id: 2, image: require("../../assets/images/Home02.png"), title: "Popular Post 2" },
-  { id: 3, image: require("../../assets/images/Home02.png"), title: "Popular Post 3" },
-];
-const instagramImages = [
-  require("../../assets/images/Home02.png"),
-  require("../../assets/images/Home02.png"),
-  require("../../assets/images/Home02.png"),
-  require("../../assets/images/Home02.png"),
-];
+const BlogMenu: React.FC<BlogMenuProps> = ({ selectedCategory, onSelectedCategory }) => {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-const BlogMenu: React.FC<BlogMenuProps> = ({ modalVisible, toggleModal }) => (
-  <Modal transparent={true} visible={modalVisible} animationType="slide" onRequestClose={toggleModal}>
-    <ScrollView>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Browse Categories:</Text>
-          {categories.map((item, index) => (
-            <Text key={index} style={styles.categoryItem}>{item}</Text>
-          ))}
-          <View style={styles.separator} />
+  const fetchCategories = async () => {
+    const baseUrl = `${environment.SERVER_URL}/api/controller/blog-category`;
+    const params = new URLSearchParams({ one: "false" });
+    const url = `${baseUrl}?${params.toString()}`;
 
-          <View style={styles.titleContainer}>
-            <Text style={styles.modalTitle}>Post:</Text>
-            <AntDesign name="left" size={20} color="#555" style={styles.icon} />
-            <AntDesign name="right" size={20} color="#555" style={styles.icon} />
-          </View>
-          <Image source={post.image} style={styles.postImage} />
-          <Text style={styles.postDetails}>Fecha de Publicación: {post.date}</Text>
-          <Text style={styles.postLabel}>{post.title}</Text>
-          <View style={styles.separator} />
+    setLoading(true);
 
-          <Text style={styles.modalTitle}>Popular Post:</Text>
-          {popularPosts.map((popular) => (
-            <PopularPost key={popular.id} image={popular.image} title={popular.title} />
-          ))}
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-          <SubscribeSection />
+      if (!response.ok) {
+        throw new Error("No se pudieron cargar las categorías");
+      }
 
-          <View style={styles.separator} />
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setCategories(data);
+      } else {
+        throw new Error("Los datos de la API no están en el formato esperado");
+      }
+      setLoading(false);
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
-          <InstagramSection instagramImages={instagramImages} />
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-          <Pressable onPress={toggleModal} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Cerrar</Text>
+  return (
+    <View style={styles.menuContainer}>
+      <Text style={styles.menuTitle}>Categorías:</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color="#00C400" />
+      ) : error ? (
+        <Text style={styles.errorText}>Error: {error}</Text>
+      ) : (
+        <>
+          <Pressable onPress={() => onSelectedCategory(null)}>
+            <Text
+              style={[
+                styles.categoryItem,
+                selectedCategory === null && styles.selectedCategory,
+              ]}
+            >
+              Todos
+            </Text>
           </Pressable>
-        </View>
-      </View>
-    </ScrollView>
-  </Modal>
-);
+          {categories.map((category) => (
+            <Pressable
+              key={category.id}
+              onPress={() =>
+                onSelectedCategory(selectedCategory === category.name ? null : category.name)
+              }
+            >
+              <Text
+                style={[
+                  styles.categoryItem,
+                  selectedCategory === category.name && styles.selectedCategory,
+                ]}
+              >
+                {category.name}
+              </Text>
+            </Pressable>
+          ))}
+        </>
+      )}
+    </View>
+  );
+};
 
-// Estilos
+
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
+  menuContainer: {
+    position: "absolute",  // Posición absoluta para superponerse a otros elementos
+    top: 50,  // Ajusta la distancia desde la parte superior
+    right: 40,
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 20,
-    width: "90%",
+    padding: 15,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    elevation: 5,
+    zIndex: 1,  // Se posiciona encima de otros elementos
   },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  icon: {
-    left: 200,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  separator: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    marginVertical: 15,
-  },
-  postImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  postDetails: {
-    fontSize: 14,
-    color: "#555",
-  },
-  postLabel: {
+  menuTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
-  },
-  closeButton: {
-    backgroundColor: "#000",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  closeButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
   },
   categoryItem: {
     fontSize: 16,
     color: "#333",
     paddingVertical: 5,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  selectedCategory: {
+    fontWeight: "bold",
+    color: "#FF9C2A",
   },
 });
 

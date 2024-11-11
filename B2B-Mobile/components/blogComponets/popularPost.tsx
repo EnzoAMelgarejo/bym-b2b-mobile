@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 interface PopularPostProps {
-  image: any; // Puedes usar ImageSourcePropType para mayor precisión
+  image: any; // Se asume que la imagen es un URL
   title: string;
 }
 
