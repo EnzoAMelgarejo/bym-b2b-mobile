@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import CommentIcon from "./comments";
 
 // Ajusta las propiedades para incluir categorías y comentarios
 type BlogPost = {
@@ -12,6 +13,7 @@ type BlogPost = {
   userId: {name: string};
   createdAt: string;
   commentsCount: number;
+  postId: number;
   likesCount: number;
   img: string; // Cambiar 'any' a 'string' para representar una URL de imagen
   category?: { name: string }; // Categoría opcional
@@ -38,9 +40,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             <Text style={styles.separator}>|</Text>
             <Text style={styles.date}>{post.createdAt}</Text>
             <Text style={styles.separator}>|</Text>
-            <Text style={styles.comments}>
-              <FontAwesome name="comments" size={14} color="#888" /> {post.commentsCount}
-            </Text>
+            <CommentIcon commentsCount={post.commentsCount} postId={post.id} />
             <Text style={styles.separator}>|</Text>
             <Text style={styles.likes}>
               <FontAwesome name="thumbs-up" size={14} color="#888" /> {post.likesCount}
