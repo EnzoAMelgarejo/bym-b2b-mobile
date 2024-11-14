@@ -48,7 +48,11 @@ const BlogMenu: React.FC<BlogMenuProps> = ({ selectedCategory, onSelectedCategor
 
   return (
     <View style={styles.menuContainer}>
-      <Text style={styles.menuTitle}>Categorías:</Text>
+      <Text style={styles.menuTitle}>Browse categories:</Text>
+      
+      {/* Separador gris claro */}
+      <View style={styles.separator} />
+
       {loading ? (
         <ActivityIndicator size="large" color="#00C400" />
       ) : error ? (
@@ -57,10 +61,7 @@ const BlogMenu: React.FC<BlogMenuProps> = ({ selectedCategory, onSelectedCategor
         <>
           <Pressable onPress={() => onSelectedCategory(null)}>
             <Text
-              style={[
-                styles.categoryItem,
-                selectedCategory === null && styles.selectedCategory,
-              ]}
+              style={[styles.categoryItem, selectedCategory === null && styles.selectedCategory]}
             >
               Todos
             </Text>
@@ -73,10 +74,7 @@ const BlogMenu: React.FC<BlogMenuProps> = ({ selectedCategory, onSelectedCategor
               }
             >
               <Text
-                style={[
-                  styles.categoryItem,
-                  selectedCategory === category.name && styles.selectedCategory,
-                ]}
+                style={[styles.categoryItem, selectedCategory === category.name && styles.selectedCategory]}
               >
                 {category.name}
               </Text>
@@ -87,7 +85,6 @@ const BlogMenu: React.FC<BlogMenuProps> = ({ selectedCategory, onSelectedCategor
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   menuContainer: {
@@ -123,6 +120,11 @@ const styles = StyleSheet.create({
   selectedCategory: {
     fontWeight: "bold",
     color: "#FF9C2A",
+  },
+  separator: {
+    height: 1,               // Altura del separador
+    backgroundColor: "#D3D3D3", // Color gris claro
+    marginVertical: 10,      // Espacio alrededor del separador
   },
 });
 

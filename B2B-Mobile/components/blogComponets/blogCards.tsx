@@ -10,7 +10,7 @@ type BlogPost = {
   id: number;
   title: string;
   content: string;
-  userId: {name: string};
+  user: {name: string};
   createdAt: string;
   commentsCount: number;
   postId: number;
@@ -36,7 +36,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
 
         <View style={styles.cardContent}>
           <View style={styles.row}>
-            <Text style={styles.author}>{post.userId.name}</Text>
+            <Text style={styles.author}>{post.user.name}</Text>
             <Text style={styles.separator}>|</Text>
             <Text style={styles.date}>{post.createdAt}</Text>
             <Text style={styles.separator}>|</Text>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: "#FF9C2A",
   },
   separator: {
     marginHorizontal: 5,
