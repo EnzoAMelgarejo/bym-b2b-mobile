@@ -349,13 +349,13 @@ const styles = StyleSheet.create(
         normalPrice: {
             fontSize: 13,
             textDecorationLine: "line-through",
-            color: "#999",
+            color: "#666666",
             marginRight: 5,
         },
         discountPrice: {
             fontSize: 15,
             fontWeight: "bold",
-            color: "#EF8216",
+            color: "#FF9C2A",
         },
         ratingContainer: {
             flexDirection: "row",
@@ -404,15 +404,17 @@ const styles = StyleSheet.create(
         sizeBox: {
             width: 30,
             height: 30,
+            borderWidth: 1,
+            borderColor: '#EEEEEE',
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#DDD",
+            backgroundColor: "#fff",
             borderRadius: 5,
             margin: 3,
         },
         selectedSizeBox: {
-            borderWidth: 2,
-            borderColor: "#EF8216",
+            borderWidth: 1,
+            borderColor: "#FAAD3D",
         },
         sizeText: {
             fontSize: 12,
@@ -420,7 +422,7 @@ const styles = StyleSheet.create(
             color: "#333",
         },
         selectedSizeText: {
-            color: "#EF8216",
+            color: "#FAAD3D",
             fontWeight: "bold",
         },
         interactionBox: {
@@ -434,7 +436,7 @@ const styles = StyleSheet.create(
             height: 24,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#DDD",
+            backgroundColor: "#F6F6F6",
             borderRadius: 5,
             marginHorizontal: 3,
         },

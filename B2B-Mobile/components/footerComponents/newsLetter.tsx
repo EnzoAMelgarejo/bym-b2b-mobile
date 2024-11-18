@@ -3,22 +3,12 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const paymentIcons = [
-  { name: 'cc-visa', color: '#1a1f71' },
-  { name: 'cc-mastercard', color: '#eb001b' },
-  { name: 'cc-amex', color: '#007bc1' },
-];
 
 // Sección para el boletín de noticias
 const Newsletter: React.FC = () => (
   <View style={styles.newsletter}>
     <Text style={styles.title}>Newsletter</Text>
     <TextInput style={styles.input} placeholder="Enter your email" placeholderTextColor="#666" />
-    <View style={styles.paymentIcons}>
-      {paymentIcons.map(({ name, color }) => (
-        <Icon key={name} name={name} size={24} color={color} style={styles.icon} />
-      ))}
-    </View>
   </View>
 );
 

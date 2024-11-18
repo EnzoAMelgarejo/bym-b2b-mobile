@@ -3,7 +3,6 @@ import { useRouter, useSegments } from "expo-router";
 import { View } from "react-native";
 import { Slot } from 'expo-router';
 import Navbar from "@/components/navbar";
-import { StatusBar } from "react-native";
 import { UserProvider } from "@/components/userContext";
 import { AuthProvider } from "./context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
