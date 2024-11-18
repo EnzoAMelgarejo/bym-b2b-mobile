@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, Image, Alert,Pressable,StyleSheet  } from 'react-native';
-import { MaterialIcons,FontAwesome } from '@expo/vector-icons';
+import { View, Text, Button, Image, Alert, Pressable, StyleSheet } from 'react-native';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { environment } from '@/configuration/environment';
 //import { useShoppingCartStore } from '../path/to/your/store'; // Ajusta la ruta
 import { useLocalSearchParams } from 'expo-router';
 
 const ProductDetailCard = () => {
     const [rating, setRating] = useState(0);
-    const [itemVisits,setItemVisits]=useState(0);
+    const [itemVisits, setItemVisits] = useState(0);
     const [model, setModel] = useState(null);
     const [selection, setSelection] = useState(null);
     const [imgAccesible, setImageAccessible] = useState(null);
@@ -30,7 +30,7 @@ const ProductDetailCard = () => {
         visits: 240,
         description: "Descripción breve del producto.",
         features: ["Característica 1", "Característica 2", "Característica 3"],
-        colors: ["#FFFFFF", "#FF9C2A", "#00C400", "#000000"], 
+        colors: ["#FFFFFF", "#FF9C2A", "#00C400", "#000000"],
         sizes: ["S", "M", "L", "XL", "XXL"],
     }
     const [textError, setTextError] = useState('');
@@ -59,8 +59,8 @@ const ProductDetailCard = () => {
         fetchData();
         checkImageUrl();
     }, [id, code]);
-    const getInteractions=async(code)=>{
-        try{
+    const getInteractions = async (code) => {
+        try {
             const data = await fetch(`${environment.SERVER_URL}/api/controller/productInteraction?one=false&code=${code}`, {
                 method: 'GET',
                 headers: {
@@ -68,8 +68,8 @@ const ProductDetailCard = () => {
                 },
             });
             setItemVisits(data[0]._count.clicks)
-        }catch(err){
-            console.log("Error en la solicitud fetch productInteraction: ",err)
+        } catch (err) {
+            console.log("Error en la solicitud fetch productInteraction: ", err)
         }
     }
 
@@ -125,18 +125,71 @@ const ProductDetailCard = () => {
         }
     };
 
-    const constructFilter = (code, categ) => {
-        const filter = { model: 'PRODUCT', filters: [] };
-
-        if (categ && categ.length > 0) {
-            const filterCateg = { code: 'filter1', type: 'LIST', value: '', list: categ };
-            filter.filters.push(filterCateg);
-            filter.filters.push({ code: 'code', type: 'NOT_EQUALS', value: code });
-        } else {
-            filter.filters.push({ code: 'code', type: 'EQUALS', value: code });
+    const constructFilter = async (categ, filter2, filter3, filter4, filterbrand) => {
+        var filter = {
+            model: 'PRODUCT',
+            filters: []
         }
+
+        var filterRange = { code: 'price', type: 'BETWEEN', value: '', list: [this.range[0], this.range[1]] }
+        filter.filters.push(filterRange);
+
+        var filterSearch = { code: 'search', type: 'LIKE', value: this.globalState.notifications.search, list: [] }
+
+        filter.filters.push(filterSearch);
+
+        if (filterbrand !== null && filterbrand.length > 0) {
+            var brand = { code: 'brand', type: 'LIST', value: '', list: [] }
+
+            filterbrand.forEach(value => {
+                brand.list.push(value.code);
+            });
+
+            filter.filters.push(brand);
+        }
+
+        if (categ !== null && categ.length > 0) {
+            var filterCateg = { code: 'filter1', type: 'LIST', value: '', list: [] }
+
+            categ.forEach(value => {
+                filterCateg.list.push(value.code);
+            });
+
+            filter.filters.push(filterCateg);
+        }
+
+        if (filter2 !== null && filter2.length > 0) {
+            var filterCateg = { code: 'filter2', type: 'LIST', value: '', list: [] }
+
+            filter2.forEach(value => {
+                filterCateg.list.push(value.code);
+            });
+
+            filter.filters.push(filterCateg);
+        }
+
+        if (filter3 !== null && filter3.length > 0) {
+            var filterCateg = { code: 'filter3', type: 'LIST', value: '', list: [] }
+
+            filter3.forEach(value => {
+                filterCateg.list.push(value.code);
+            });
+
+            filter.filters.push(filterCateg);
+        }
+
+        if (filter4 !== null && filter4.length > 0) {
+            var filterCateg = { code: 'filter4', type: 'LIST', value: '', list: [] }
+
+            filter4.forEach(value => {
+                filterCateg.list.push(value.code);
+            });
+
+            filter.filters.push(filterCateg);
+        }
+
         return filter;
-    };
+    }
 
     const saveProduct = async () => {
         if (number <= 0) {
@@ -186,7 +239,7 @@ const ProductDetailCard = () => {
 
                 <View style={styles.priceRow}>
                     <Text style={styles.normalPrice}>{itemProd.price}</Text>
-                    <Text style={styles.discountPrice}>{/**/ }</Text>
+                    <Text style={styles.discountPrice}>{/**/}</Text>
                     <View style={styles.ratingContainer}>
                         {Array.from({ length: 5 }).map((_, index) => (
                             <Pressable key={index} onPress={() => setRating(index + 1)}>

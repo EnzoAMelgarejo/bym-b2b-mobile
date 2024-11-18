@@ -120,7 +120,6 @@ async function getOnlyClickDetails(item: any) {
     }
 
     const data = await response.json();
-    console.log("Respuesta",data)
     return data;
   } catch (error) {
     console.error('Hubo un problema con la solicitud fetch:', error.message, error);

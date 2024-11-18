@@ -1,40 +1,42 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { environment } from '@/configuration/environment';
 import filterCategoriesData from '../data/categoryFilter';
 
 const FiltersMenu = () => {
-  const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: boolean }>({});
 
-  const handleCheckboxChange = (category: string, element: string) => {
-    const key = `${category}-${element}`;
-    setSelectedFilters({
-      ...selectedFilters,
-      [key]: !selectedFilters[key],  // Alterna entre seleccionado y no seleccionado
-    });
-  };
 
   return (
 
     <ScrollView style={styles.menu} nestedScrollEnabled={true} contentContainerStyle={{ flexGrow: 1 }}>
-      {filterCategoriesData.map((category, index) => (
-        <View key={category.id} style={styles.categoryContainer}>
-          <Text style={styles.categoryTitle}>{category.name}</Text>
-          {category.elements.map((element) => {
-            const key = `${category.name}-${element}`;
-            return (
-              <View key={key} style={styles.elementItem}>
-                {/* Agregar las CheckBox PENDIENTE*/}
-                <Text style={styles.elementText}>{element}</Text>
-              </View>
-            );
-          })}
-
-          {index < filterCategoriesData.length - 1 && (
-            <View style={styles.separator} />  //Separadores
-          )}
-
-        </View>
-      ))}
+      <View style={styles.categoryContainer}>
+        <Text style={styles.categoryTitle}>{'Marca'}</Text>
+        {brandFilter.map((element) => {
+          const key = element.id;
+          return (
+            <View key={key} style={styles.elementItem}>
+              {/* Agregar las CheckBox PENDIENTE*/}
+              <Pressable onPress={() => setSelectedBrand(prevItems => [...prevItems, element])}>
+                <Text style={styles.elementText}>{element.description}</Text>
+              </Pressable>
+            </View>
+          );
+        })}
+        <View style={styles.separator} />
+        <Text style={styles.categoryTitle}>{'Categoria'}</Text>
+        {filter1.map((element) => {
+          const key = element.id;
+          return (
+            <View key={key} style={styles.elementItem}>
+              {/* Agregar las CheckBox PENDIENTE*/}
+              <Pressable onPress={() => setSelected(prevItems => [...prevItems, element])}>
+                <Text style={styles.elementText}>{element.description}</Text>
+              </Pressable>
+            </View>
+          );
+        })}
+        <View style={styles.separator} />
+      </View>
     </ScrollView>
   );
 };

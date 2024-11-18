@@ -69,7 +69,6 @@ export const RecommendedProducts: React.FC<Product> = ({ id, title, visits, quan
               <ScrollView>
                 {products.map((product) => (
                   <View key={product.id} style={styles.card}>
-                    <Image source={product.image} style={styles.cardImage} />
                     
                     <View style={styles.cardContent}>
                       <Text style={styles.cardTitle}>{product.title}</Text>

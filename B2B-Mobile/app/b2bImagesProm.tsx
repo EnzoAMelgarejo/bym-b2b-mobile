@@ -148,7 +148,6 @@ async function getImagesProm() {
         }
 
         const data = await response.json();
-        console.log('Datos recibidos IMAGESPROM:', data);
         return data;
     } catch (error) {
         console.error('Hubo un problema con la solicitud fetch:', error.message, error);
