@@ -17,7 +17,7 @@ export const ProductCard: React.FC<PropsCard> = ({ title, image, product }) => {
   const [rating, setRating] = useState(0);
   const [imageSource,setImageSource]=useState({uri:image})
   const router = useRouter();
-
+  console.log("Entre",title,image,product)
   const handleRating = (newRating: number) => {
     setRating(newRating);
   };

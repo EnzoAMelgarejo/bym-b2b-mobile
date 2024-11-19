@@ -24,7 +24,6 @@ export const posts = fetch(url, {
   return response.json();
 })
 .then(data => {
-  console.log('Datos recibidos:', data); //
 })
 .catch(error => {
   console.error('Hubo un problema con la solicitud fetch:', error.message, error);
