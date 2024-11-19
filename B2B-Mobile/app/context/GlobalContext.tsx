@@ -10,7 +10,7 @@ interface GlobalContextProps {
     setGlobalState: React.Dispatch<React.SetStateAction<GlobalState>>;
 }
 // Crea el contexto con el tipo correcto
-export const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
+const GlobalContext = createContext<GlobalContextProps | undefined>(undefined);
 
 // Proveedor del contexto
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
@@ -22,3 +22,5 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
         </GlobalContext.Provider>
     );
 };
+
+export default GlobalContext;

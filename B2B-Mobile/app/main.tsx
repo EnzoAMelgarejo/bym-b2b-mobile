@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, Pressable, Image, FlatList } from 'react-native';
-import ProductList from '../components/productList';
+import ProductList from '@/components/productList';
 import B2bOnlyClickButton from '@/components/b2bOnlyClickButton';
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -13,7 +13,7 @@ import B2bOnlyClick from '@/components/b2bOnlyClick';
 import { B2bCarousel } from './b2bCarousel';
 import B2bImagesProm from './b2bImagesProm';
 //
-export const Main = () => {
+const Main = () => {
 
 
     return (
@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
 
 
 
+
+
 //
 async function getCategories() {
     const baseUrl = `${environment.SERVER_URL}/api/controller/category`;
@@ -168,4 +170,5 @@ async function getCategories() {
         return [];
     }
 }
-//
+
+export default Main;

@@ -1,97 +1,85 @@
 // CartList.tsx
 import React from "react";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 type Product = {
   id: number;
   title: string;
-  quantity: number;
-  price: number;
-  image: any;
+  number: number;
+  total: number;
+  image: string;
 };
 
-type CartListProps = {
+interface CartListProps {
   products: Product[];
   onIncrement: (id: number) => void;
   onDecrement: (id: number) => void;
-  onRemoveProduct: (id: number) => void;
-};
+  onRemove: (id: number) => void;
+}
 
-const CartList: React.FC<CartListProps> = ({ products, onIncrement, onDecrement, onRemoveProduct }) => {
+const CartList: React.FC<CartListProps> = ({ products, onIncrement, onDecrement, onRemove }) => {
   return (
-    <>
+    <View>
       {products.map((product) => (
-        <View key={product.id} style={styles.card}>
-          <Image source={product.image} style={styles.cardImage} />
-          <Text style={styles.cardTitle}>{product.title}</Text>
-
-          <View style={styles.counterContainer}>
-            <Pressable onPress={() => onDecrement(product.id)} style={styles.counterButton}>
-              <Text style={styles.counterButtonText}>-</Text>
-            </Pressable>
-            <Text style={styles.quantity}>{product.quantity}</Text>
-            <Pressable onPress={() => onIncrement(product.id)} style={styles.counterButton}>
-              <Text style={styles.counterButtonText}>+</Text>
-            </Pressable>
+        <View key={product.id} style={styles.productContainer}>
+          <Image source={{uri: product.image}} style={styles.productImage} />
+          <View style={styles.productDetails}>
+            <Text style={styles.productTitle}>{product.title}</Text>
+            <View style={styles.quantityControls}>
+              <Pressable onPress={() => onDecrement(product.id)}>
+                <SimpleLineIcons name="minus" size={24} color="black" />
+              </Pressable>
+              <Text style={styles.quantityText}>{product.number}</Text>
+              <Pressable onPress={() => onIncrement(product.id)}>
+                <SimpleLineIcons name="plus" size={24} color="black" />
+              </Pressable>
+            </View>
+            <Text style={styles.productPrice}>${product.total.toFixed(2)}</Text>
           </View>
-
-          <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-
-          <Pressable onPress={() => onRemoveProduct(product.id)} style={styles.removeButton}>
-            <Ionicons name="trash-outline" size={24} color="red" />
+          <Pressable onPress={() => onRemove(product.id)} style={styles.removeButton}>
+            <SimpleLineIcons name="close" size={24} color="red" />
           </Pressable>
         </View>
       ))}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  productContainer: {
     flexDirection: "row",
-    padding: 10,
-    marginVertical: 6,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
     alignItems: "center",
+    marginVertical: 8,
   },
-  cardImage: {
-    width: 45,
-    height: 45,
-    borderRadius: 6,
-    marginRight: 10,
+  productImage: {
+    width: 100,
+    height: 100,
+    marginRight: 16,
   },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
+  productDetails: {
     flex: 1,
   },
-  counterContainer: {
+  productTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  quantityControls: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 10,
+    marginTop: 8,
   },
-  counterButton: {
-    padding: 5,
-    backgroundColor: "#d9d9d9",
-    borderRadius: 4,
-    marginHorizontal: 5,
-  },
-  counterButtonText: {
+  quantityText: {
+    marginHorizontal: 8,
     fontSize: 16,
   },
-  quantity: {
-    fontSize: 14,
-  },
-  price: {
-    fontSize: 14,
-    color: "#00C400",
+  productPrice: {
+    marginTop: 8,
+    fontSize: 16,
     fontWeight: "bold",
-    marginHorizontal: 10,
   },
   removeButton: {
-    padding: 6,
+    marginLeft: 16,
   },
 });
 

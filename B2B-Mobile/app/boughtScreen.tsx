@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import Footer from "@/components/footer";
 
-export const Bought = () => {
+const Bought = () => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('../assets/images/task.png')} />
@@ -59,3 +59,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+export default Bought;

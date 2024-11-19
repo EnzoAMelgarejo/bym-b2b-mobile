@@ -4,7 +4,7 @@ import ProductList from './productList';
 import { MaterialIcons } from '@expo/vector-icons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useRoute } from '@react-navigation/native';
-import { GlobalContext } from '@/app/context/GlobalContext';
+import GlobalContext from '@/app/context/GlobalContext';
 import ProductsData from '../data/productData';
 import Footer from './footer';
 import { environment } from '@/configuration/environment';

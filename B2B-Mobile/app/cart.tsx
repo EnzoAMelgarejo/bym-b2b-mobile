@@ -1,113 +1,183 @@
-// Cart.tsx
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Pressable, Text } from "react-native";
-import CheckoutSummary from "@/components/cartComponents/checkoutSummary";
-import lightbulbImage from "../assets/images/lightbulb.png";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView, Pressable, Text, Image } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import Footer from "../components/footer";
+import CheckoutSummary from "@/components/cartComponents/checkoutSummary";
 import CartList from "@/components/cartComponents/cartList";
+import { environment } from "@/configuration/environment";
 
 type Product = {
   id: number;
   title: string;
-  quantity: number;
-  price: number;
-  image: any;
+  number: number;
+  total: number;
+  image: string;
 };
 
 const Cart: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      title: "Producto 1",
-      quantity: 1,
-      price: 33.33,
-      image: lightbulbImage,
-    },
-    {
-      id: 2,
-      title: "Producto 2",
-      quantity: 1,
-      price: 33.33,
-      image: lightbulbImage,
-    },
-    {
-      id: 3,
-      title: "Producto 3",
-      quantity: 1,
-      price: 33.33,
-      image: lightbulbImage,
-    },
-  ]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [subtotal, setSubtotal] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Fetch token from your auth context or a cookie
+  const token = "YOUR_AUTH_TOKEN"; // Reemplaza con tu lógica para obtener el token
+
+  const baseUrl = `${environment.SERVER_URL}/api/controller`; // Cambia esto a tu URL base
+
+  // Reusable fetch function
+  const fetchData = async (endpoint: string, options: RequestInit = {}) => {
+    const url = `${baseUrl}/${endpoint}`;
+    setLoading(true);
+  
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          ...options.headers,
+          "Content-Type": "application/json",
+          token,
+        },
+      });
+  
+      // Verifica si la respuesta es exitosa (código de estado 200-299)
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+  
+      try {
+        // Intenta parsear la respuesta como JSON
+        const data = await response.json();
+        setLoading(false);
+        return data;
+      } catch (parseError) {
+        // Si ocurre un error de parseo, asume que el contenido no es JSON
+        throw new Error("La respuesta no es un JSON válido.");
+      }
+    } catch (error) {
+      // Muestra un mensaje de error detallado en la consola
+      console.error("Error fetching data:", error);
+  
+      // Establece un mensaje de error más detallado para ayudar al usuario a entender el problema
+      if (error instanceof SyntaxError) {
+        setError("Error al analizar la respuesta del servidor. El formato de los datos no es válido.");
+      } else if (error.message.includes("NetworkError")) {
+        setError("Error de red. No se pudo conectar con el servidor.");
+      } else {
+        setError(`Error al obtener los datos: ${error.message}`);
+      }
+  
+      setLoading(false);
+      return null;
+    }
+  };
+  
+
+  // Fetch cart items on component mount
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const fetchCartItems = async () => {
+    const data = await fetchData("order", { method: "GET" });
+    if (data?.itemsOrder) {
+      setProducts(data.itemsOrder);
+      calculateSubtotal(data.itemsOrder);
+    } else {
+      setError("Error al obtener los datos del carrito.");
+    }
+  };
 
   const handleIncrement = (id: number) => {
-    setProducts(products.map(product => product.id === id ? { ...product, quantity: product.quantity + 1 } : product));
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id ? { ...product, quantity: product.number + 1 } : product
+      )
+    );
+    calculateSubtotal();
   };
 
   const handleDecrement = (id: number) => {
-    setProducts(products.map(product => 
-      product.id === id && product.quantity > 1 
-        ? { ...product, quantity: product.quantity - 1 } 
-        : product
-    ));
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id && product.number > 1
+          ? { ...product, quantity: product.number - 1 }
+          : product
+      )
+    );
+    calculateSubtotal();
   };
 
-  const handleRemoveProduct = (id: number) => {
-    setProducts(products.filter(product => product.id !== id));
+  const calculateSubtotal = (updatedProducts = products) => {
+    const newSubtotal = updatedProducts.reduce(
+      (acc, product) => acc + product.total * product.number,
+      0
+    );
+    setSubtotal(newSubtotal);
+    setTotal(newSubtotal); // Add shipping calculation if needed
+  };
+
+  const handleRemoveProduct = async (id: number) => {
+    const data = await fetchData("itemsOrder", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    });
+    if (data) {
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+      calculateSubtotal();
+    } else {
+      setError("Error al eliminar el producto del carrito.");
+    }
+  };
+
+  const handleCheckout = async () => {
+    const data = await fetchData("order", {
+      method: "POST",
+      body: JSON.stringify({
+        total,
+        items: products,
+      }),
+    });
+    if (data) {
+      // Reset cart or show success message
+      setProducts([]);
+      setSubtotal(0);
+      setTotal(0);
+    } else {
+      setError("Error al procesar la compra.");
+    }
   };
 
   return (
-    <ScrollView>
-      <View style={styles.cartContainer}>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Carrito de compra</Text>
-          <SimpleLineIcons name="options" size={20} color="white" />
-        </Pressable>
-
-        <View style={styles.productsColumn}>
-          <ScrollView>
-            <CartList
-              products={products}
-              onIncrement={handleIncrement}
-              onDecrement={handleDecrement}
-              onRemoveProduct={handleRemoveProduct}
-            />
-          </ScrollView>
-        </View>
-
-        <CheckoutSummary />
-
-        <Footer />
-      </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      {error && <Text style={styles.error}>{error}</Text>}
+      {loading && <Text style={styles.loading}>Cargando...</Text>}
+      <CartList
+        products={products}
+        onIncrement={handleIncrement}
+        onDecrement={handleDecrement}
+        onRemove={handleRemoveProduct}
+      />
+      <CheckoutSummary subtotal={subtotal} total={total} onCheckout={handleCheckout} />
+      <Footer />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  cartContainer: {
+  container: {
+    marginTop: 150,
     padding: 10,
-    marginTop: 80,
-    flex: 1,
+    backgroundColor: "#fff",
   },
-  button: {
-    backgroundColor: '#00C400',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginVertical: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    gap: 25,
+  error: {
+    color: "red",
+    marginBottom: 16,
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 5,
-  },
-  productsColumn: {
-    width: "100%",
+  loading: {
+    color: "gray",
+    marginBottom: 16,
   },
 });
 
