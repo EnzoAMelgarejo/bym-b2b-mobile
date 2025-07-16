@@ -1,66 +1,56 @@
-// app/auth/Register.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import Footer from '../components/footer';
+import { useTranslation } from 'react-i18next';
 
 const FormRequest = () => {
+  const { t } = useTranslation();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
   const handleRegister = () => {
-    // Validaciones
     if (!firstName || !lastName || !email || !phone) {
-      Alert.alert("Error", "Todos los campos son obligatorios");
+      Alert.alert(t("alerts.errorTitle"), t("alerts.errorRequiredFields"));
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
-      Alert.alert("Error", "Correo electrónico inválido");
+      Alert.alert(t("alerts.errorTitle"), t("alerts.errorInvalidEmail"));
       return;
     }
     if (!/^\d+$/.test(phone)) {
-      Alert.alert("Error", "Teléfono inválido. Solo se permiten números.");
+      Alert.alert(t("alerts.errorTitle"), t("alerts.errorInvalidPhone"));
       return;
     }
-
-    // Lógica para registrar al usuario (conectarse al backend)
-    Alert.alert("Registro exitoso", `Bienvenido, ${firstName} ${lastName}`);
+    Alert.alert(t("alerts.successTitle"), t("alerts.successMessage", { firstName, lastName }));
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <Pressable style={styles.buttonTitle}>
-          <Text style={{ color: '#ffff', fontSize: 16 }}>Solicitud de formularios</Text>
+          <Text style={{ color: '#ffff', fontSize: 16 }}>{t("formTitle")}</Text>
           <SimpleLineIcons name="options" size={20} color="white" />
         </Pressable>
 
         <View style={styles.formContainer}>
-          <Text style={styles.label}>Nombre</Text>
-          <TextInput
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-          />
+          <Text style={styles.label}>{t("fields.firstName")}</Text>
+          <TextInput style={styles.input} value={firstName} onChangeText={setFirstName} />
 
-          <Text style={styles.label}>Apellido</Text>
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-          />
+          <Text style={styles.label}>{t("fields.lastName")}</Text>
+          <TextInput style={styles.input} value={lastName} onChangeText={setLastName} />
 
-          <Text style={styles.label}>Mail</Text>
+          <Text style={styles.label}>{t("fields.email")}</Text>
           <TextInput
             style={styles.input}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
           />
-          
-          <Text style={styles.label}>Teléfono</Text>
+
+          <Text style={styles.label}>{t("fields.phone")}</Text>
           <TextInput
             style={styles.input}
             value={phone}
@@ -71,15 +61,11 @@ const FormRequest = () => {
 
         <View style={styles.buttonContainer}>
           <Pressable style={[styles.button, { backgroundColor: '#FF9C2A' }]} onPress={handleRegister}>
-            <Text style={{ color: '#ffff', fontSize: 14 }}>
-              Enviar formulario
-            </Text>
+            <Text style={{ color: '#ffff', fontSize: 14 }}>{t("buttons.submitForm")}</Text>
           </Pressable>
 
           <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
-            <Text style={{ color: '#ffff', fontSize: 14 }}>
-              Carga tu formulario
-            </Text>
+            <Text style={{ color: '#ffff', fontSize: 14 }}>{t("buttons.uploadForm")}</Text>
           </Pressable>
         </View>
 

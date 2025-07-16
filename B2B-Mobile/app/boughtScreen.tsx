@@ -1,31 +1,46 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { Link } from "expo-router";
 import Footer from "@/components/footer";
+import { useTranslation } from "react-i18next";
 
-const Bought = () => {
+const Bought: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require('../assets/images/task.png')} />
-      <Text style={styles.title}>Gracias por tu compra</Text>
-      <Text style={styles.label}>
-        Tu orden está en camino. Te enviamos un mail con toda la información.
-      </Text>
-      <Link href="/main" style={styles.button}>
-        <Text style={styles.buttonText}>Continuar comprando</Text>
-      </Link>
-      <Footer />
-    </View>
+    <ScrollView
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Image style={styles.image} source={require("../assets/images/task.png")} />
+          <Text style={styles.title}>{t("thanksForYourPurchase")}</Text>
+          <Text style={styles.label}>{t("orderOnItsWay")}</Text>
+          <Link href="/main" style={styles.button}>
+            <Text style={styles.buttonText}>{t("continueShopping")}</Text>
+          </Link>
+        </View>
+        <Footer />
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
+    padding: 10,
+  },
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    gap: 100,
+    marginTop: 150,
+  },
+  content: {
     alignItems: "center",
-    padding: 20,
-    backgroundColor: "#ffffff",
   },
   image: {
     width: 100,
@@ -47,7 +62,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: "#ff6600",
+    backgroundColor: "#EF8216",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,

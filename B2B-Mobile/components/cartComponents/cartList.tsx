@@ -1,13 +1,12 @@
-// CartList.tsx
 import React from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 type Product = {
   id: number;
-  title: string;
-  number: number;
-  total: number;
+  name: string;
+  quant: number;
+  price: number;
   image: string;
 };
 
@@ -25,17 +24,17 @@ const CartList: React.FC<CartListProps> = ({ products, onIncrement, onDecrement,
         <View key={product.id} style={styles.productContainer}>
           <Image source={{uri: product.image}} style={styles.productImage} />
           <View style={styles.productDetails}>
-            <Text style={styles.productTitle}>{product.title}</Text>
+            <Text style={styles.productTitle}>{product.name}</Text>
             <View style={styles.quantityControls}>
               <Pressable onPress={() => onDecrement(product.id)}>
                 <SimpleLineIcons name="minus" size={24} color="black" />
               </Pressable>
-              <Text style={styles.quantityText}>{product.number}</Text>
+              <Text style={styles.quantityText}>{product.quant}</Text>
               <Pressable onPress={() => onIncrement(product.id)}>
                 <SimpleLineIcons name="plus" size={24} color="black" />
               </Pressable>
             </View>
-            <Text style={styles.productPrice}>${product.total.toFixed(2)}</Text>
+            <Text style={styles.productPrice}>${product.price.toFixed(2)}</Text>
           </View>
           <Pressable onPress={() => onRemove(product.id)} style={styles.removeButton}>
             <SimpleLineIcons name="close" size={24} color="red" />
@@ -67,19 +66,17 @@ const styles = StyleSheet.create({
   quantityControls: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
   },
   quantityText: {
     marginHorizontal: 8,
     fontSize: 16,
   },
   productPrice: {
-    marginTop: 8,
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
+    color: "gray",
   },
   removeButton: {
-    marginLeft: 16,
+    padding: 8,
   },
 });
 

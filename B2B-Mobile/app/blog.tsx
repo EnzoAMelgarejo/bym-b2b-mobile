@@ -5,8 +5,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import BlogMenu from "@/components/blogComponets/blogFilter";
 import Footer from "../components/footer";
+import { useTranslation } from "react-i18next";
 
 const Blog = () => {
+  const { t } = useTranslation();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -17,7 +19,7 @@ const Blog = () => {
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Blog</Text>
+            <Text style={styles.buttonText}>{t("blog.title")}</Text>
             <SimpleLineIcons name="options" size={20} color="white" />
           </Pressable>
 
@@ -25,7 +27,7 @@ const Blog = () => {
             style={[styles.button, { backgroundColor: "#FF9C2A" }]}
             onPress={toggleMenu}
           >
-            <Text style={styles.buttonText}>Filtros</Text>
+            <Text style={styles.buttonText}>{t("blog.filters")}</Text>
             <Ionicons name="options-sharp" size={20} color="white" />
           </Pressable>
         </View>
@@ -44,7 +46,6 @@ const Blog = () => {
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

@@ -1,84 +1,94 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Pressable, Text, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import Footer from "../components/footer";
 import CheckoutSummary from "@/components/cartComponents/checkoutSummary";
 import CartList from "@/components/cartComponents/cartList";
 import { environment } from "@/configuration/environment";
+import { useAuth } from "./context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Product = {
   id: number;
-  title: string;
-  number: number;
-  total: number;
+  name: string;
+  quant: number;
+  price: number;
   image: string;
 };
 
 const Cart: React.FC = () => {
+  const { authenticated, loading: authLoading, logUserOut } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [subtotal, setSubtotal] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
 
-  // Fetch token from your auth context or a cookie
-  const token = "YOUR_AUTH_TOKEN"; // Reemplaza con tu lógica para obtener el token
+  const baseUrl = `${environment.SERVER_URL}/api/controller`; // URL base de la API
 
-  const baseUrl = `${environment.SERVER_URL}/api/controller`; // Cambia esto a tu URL base
+  // Obtener el token de AsyncStorage
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const savedToken = await AsyncStorage.getItem('token');
+        setToken(savedToken);
+      } catch (error) {
+        setError("Error al obtener el token.");
+      }
+    };
 
-  // Reusable fetch function
+    if (authenticated) {
+      getToken();
+    }
+  }, [authenticated]);
+
+  // Función de fetch para consumir las APIs
   const fetchData = async (endpoint: string, options: RequestInit = {}) => {
     const url = `${baseUrl}/${endpoint}`;
     setLoading(true);
-  
+
+    if (!token) {
+      setError("Token no disponible. El usuario no está autenticado.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(url, {
         ...options,
         headers: {
           ...options.headers,
           "Content-Type": "application/json",
-          token,
+          token, // Usa el token desde AsyncStorage
         },
       });
-  
-      // Verifica si la respuesta es exitosa (código de estado 200-299)
+
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
-  
-      try {
-        // Intenta parsear la respuesta como JSON
-        const data = await response.json();
-        setLoading(false);
-        return data;
-      } catch (parseError) {
-        // Si ocurre un error de parseo, asume que el contenido no es JSON
-        throw new Error("La respuesta no es un JSON válido.");
-      }
+
+      const data = await response.json();
+      setLoading(false);
+      return data;
     } catch (error) {
-      // Muestra un mensaje de error detallado en la consola
       console.error("Error fetching data:", error);
-  
-      // Establece un mensaje de error más detallado para ayudar al usuario a entender el problema
-      if (error instanceof SyntaxError) {
-        setError("Error al analizar la respuesta del servidor. El formato de los datos no es válido.");
-      } else if (error.message.includes("NetworkError")) {
-        setError("Error de red. No se pudo conectar con el servidor.");
-      } else {
-        setError(`Error al obtener los datos: ${error.message}`);
-      }
-  
+      setError(`Error al obtener los datos: ${error.message}`);
       setLoading(false);
       return null;
     }
   };
-  
 
-  // Fetch cart items on component mount
+  // Obtener productos del carrito al montar el componente
   useEffect(() => {
-    fetchCartItems();
-  }, []);
+    if (authenticated && token) {
+      fetchCartItems();
+    } else {
+      setError("Por favor, inicia sesión para ver tu carrito.");
+    }
+  }, [authenticated, token]);
 
+  // Función para obtener los productos del carrito
   const fetchCartItems = async () => {
     const data = await fetchData("order", { method: "GET" });
     if (data?.itemsOrder) {
@@ -89,10 +99,11 @@ const Cart: React.FC = () => {
     }
   };
 
+  // Funciones para manejar incremento y decremento de productos
   const handleIncrement = (id: number) => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.id === id ? { ...product, quantity: product.number + 1 } : product
+        product.id === id ? { ...product, quant: product.quant + 1 } : product
       )
     );
     calculateSubtotal();
@@ -101,23 +112,25 @@ const Cart: React.FC = () => {
   const handleDecrement = (id: number) => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.id === id && product.number > 1
-          ? { ...product, quantity: product.number - 1 }
+        product.id === id && product.quant > 1
+          ? { ...product, quant: product.quant - 1 }
           : product
       )
     );
     calculateSubtotal();
   };
 
+  // Calcular el subtotal
   const calculateSubtotal = (updatedProducts = products) => {
     const newSubtotal = updatedProducts.reduce(
-      (acc, product) => acc + product.total * product.number,
+      (acc, product) => acc + product.price * product.quant,
       0
     );
     setSubtotal(newSubtotal);
-    setTotal(newSubtotal); // Add shipping calculation if needed
+    setTotal(newSubtotal); // Agregar cálculo de envío si es necesario
   };
 
+  // Eliminar un producto del carrito
   const handleRemoveProduct = async (id: number) => {
     const data = await fetchData("itemsOrder", {
       method: "DELETE",
@@ -131,6 +144,7 @@ const Cart: React.FC = () => {
     }
   };
 
+  // Realizar el checkout
   const handleCheckout = async () => {
     const data = await fetchData("order", {
       method: "POST",
@@ -140,7 +154,6 @@ const Cart: React.FC = () => {
       }),
     });
     if (data) {
-      // Reset cart or show success message
       setProducts([]);
       setSubtotal(0);
       setTotal(0);
@@ -167,7 +180,7 @@ const Cart: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 150,
+    paddingTop: 150,
     padding: 10,
     backgroundColor: "#fff",
   },

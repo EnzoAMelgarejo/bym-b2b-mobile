@@ -1,33 +1,45 @@
-// app/auth/Register.tsx
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from 'react-native';
-import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import Footer from '../components/footer';
+import React, { useState } from "react";
+import { View, Text, TextInput, StyleSheet, Alert, Pressable, ScrollView } from "react-native";
+import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import Footer from "../components/footer";
+import { useTranslation } from "react-i18next";
 
-const FormRequest = () => {
+const FormRequest: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [productType, setProductType] = useState('');
-  const [documentNumber, setDocumentNumber] = useState('');
-  const [invoiceNumber, setInvoiceNumber] = useState('');
-  const [ruc, setRuc] = useState('');
-  const [serialNumber, setSerialNumber] = useState('');
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [productType, setProductType] = useState("");
+  const [documentNumber, setDocumentNumber] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [ruc, setRuc] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
 
   const handleRegister = () => {
-    if (!firstName || !lastName || !email || !phone || !productType || !documentNumber || !invoiceNumber || !ruc || !serialNumber) {
-      Alert.alert("Error", "Todos los campos son obligatorios");
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !productType ||
+      !documentNumber ||
+      !invoiceNumber ||
+      !ruc ||
+      !serialNumber
+    ) {
+      Alert.alert(t("error"), t("allFieldsRequired"));
       return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
-      Alert.alert("Error", "Correo electrónico inválido");
+      Alert.alert(t("error"), t("invalidEmail"));
       return;
     }
     if (!/^\d+$/.test(phone)) {
-      Alert.alert("Error", "Teléfono inválido. Solo se permiten números.");
+      Alert.alert(t("error"), t("invalidPhone"));
       return;
     }
 
@@ -38,34 +50,26 @@ const FormRequest = () => {
     <ScrollView>
       <View style={styles.container}>
         <Pressable style={styles.buttonTitle}>
-          <Text style={{ color: '#ffff', fontSize: 16 }}>Datos de garantía</Text>
+          <Text style={{ color: "#ffff", fontSize: 16 }}>{t("warrantyDetails")}</Text>
           <SimpleLineIcons name="options" size={20} color="white" />
         </Pressable>
 
         <View style={styles.formContainer}>
-          <Text style={styles.label}>Nombre</Text>
-          <TextInput
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-          />
+          <Text style={styles.label}>{t("firstName")}</Text>
+          <TextInput style={styles.input} value={firstName} onChangeText={setFirstName} />
 
-          <Text style={styles.label}>Apellido</Text>
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-          />
+          <Text style={styles.label}>{t("lastName")}</Text>
+          <TextInput style={styles.input} value={lastName} onChangeText={setLastName} />
 
-          <Text style={styles.label}>Mail</Text>
+          <Text style={styles.label}>{t("email")}</Text>
           <TextInput
             style={styles.input}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
           />
-          
-          <Text style={styles.label}>Teléfono</Text>
+
+          <Text style={styles.label}>{t("phone")}</Text>
           <TextInput
             style={styles.input}
             value={phone}
@@ -73,58 +77,40 @@ const FormRequest = () => {
             keyboardType="phone-pad"
           />
 
-          <Text style={styles.label}>Tipo de producto</Text>
-          <TextInput
-            style={styles.input}
-            value={productType}
-            onChangeText={setProductType}
-          />
+          <Text style={styles.label}>{t("productType")}</Text>
+          <TextInput style={styles.input} value={productType} onChangeText={setProductType} />
 
-          <Text style={styles.label}>Número de documento</Text>
-          <TextInput
-            style={styles.input}
-            value={documentNumber}
-            onChangeText={setDocumentNumber}
-          />
+          <Text style={styles.label}>{t("documentNumber")}</Text>
+          <TextInput style={styles.input} value={documentNumber} onChangeText={setDocumentNumber} />
 
-          <Text style={styles.label}>Número de factura</Text>
-          <TextInput
-            style={styles.input}
-            value={invoiceNumber}
-            onChangeText={setInvoiceNumber}
-          />
+          <Text style={styles.label}>{t("invoiceNumber")}</Text>
+          <TextInput style={styles.input} value={invoiceNumber} onChangeText={setInvoiceNumber} />
 
-          <Text style={styles.label}>RUC de compra</Text>
-          <TextInput
-            style={styles.input}
-            value={ruc}
-            onChangeText={setRuc}
-          />
+          <Text style={styles.label}>{t("ruc")}</Text>
+          <TextInput style={styles.input} value={ruc} onChangeText={setRuc} />
 
-          <Text style={styles.label}>Número de serie</Text>
-          <TextInput
-            style={styles.input}
-            value={serialNumber}
-            onChangeText={setSerialNumber}
-          />
+          <Text style={styles.label}>{t("serialNumber")}</Text>
+          <TextInput style={styles.input} value={serialNumber} onChangeText={setSerialNumber} />
         </View>
 
         <View style={styles.buttonContainer}>
-          <Pressable style={[styles.button, { backgroundColor: '#FF9C2A' }]} onPress={handleRegister}>
-            <Text style={{ color: '#ffff', fontSize: 14 }}>Adjuntar factura</Text>
+          <Pressable style={[styles.button, { backgroundColor: "#FF9C2A" }]} onPress={handleRegister}>
+            <Text style={{ color: "#ffff", fontSize: 14 }}>{t("attachInvoice")}</Text>
           </Pressable>
 
-          <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
+          <Pressable style={[styles.button, { backgroundColor: "#00C400" }]} onPress={handleRegister}>
             <View style={styles.cameraButton}>
               <Ionicons name="camera" size={20} color="white" />
-              <Text style={{ color: '#ffff', fontSize: 14, marginLeft: 5 }}>Tomar fotografía</Text>
+              <Text style={{ color: "#ffff", fontSize: 14, marginLeft: 5 }}>
+                {t("takePhoto")}
+              </Text>
             </View>
           </Pressable>
         </View>
 
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Pressable style={[styles.button, { backgroundColor: '#00C400' }]} onPress={handleRegister}>
-            <Text style={{ color: '#ffff', fontSize: 16, marginLeft: 5 }}>Enviar</Text>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Pressable style={[styles.button, { backgroundColor: "#00C400" }]} onPress={handleRegister}>
+            <Text style={{ color: "#ffff", fontSize: 16, marginLeft: 5 }}>{t("submit")}</Text>
           </Pressable>
         </View>
 

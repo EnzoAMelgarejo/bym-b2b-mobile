@@ -1,48 +1,59 @@
-// Footer.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import FooterSection from './footerComponents/footerSection';
 import Newsletter from './footerComponents/newsLetter';
 import SocialIcons from './footerComponents/socialIcons';
+import { useTranslation } from 'react-i18next';
 
 // Secciones del footer
 const sections = [
   {
-    title: 'CONTACTO',
-    items: [{ label: 'Información', path: '/contact/informacion' }],
+    titleKey: 'Contacto',
+    items: [{ labelKey: 'Información', path: '/contact/informacion' }],
   },
   {
-    title: 'CATÁLOGO',
+    titleKey: 'Catálogo',
     items: [
-      { label: 'Dónde comprar', path: '/findUs' },
-      { label: 'Formularios', path: '/forms' },
-      { label: 'Garantías', path: '/garanty' },
-      { label: 'Blog', path: '/blog' },
+      { labelKey: 'Dónde comprar', path: '/findUs' },
+      { labelKey: 'Formularios', path: '/forms' },
+      { labelKey: 'Garantía', path: '/garanty' },
+      { labelKey: 'Blog', path: '/blog' },
     ],
   },
   {
-    title: 'NOSOTROS',
+    titleKey: 'Nosotros',
     items: [
-      { label: 'Nuestra Historia', path: '/nosotros/historia' },
-      { label: 'Trabaja con nosotros', path: '/nosotros/trabaja' },
+      { labelKey: 'Nuestra Historia', path: '/nosotros/historia' },
+      { labelKey: 'Trabaja con nosotros', path: '/nosotros/trabaja' },
     ],
   },
 ];
 
 // Componente principal del footer
-const Footer: React.FC = () => (
-  <View style={styles.footerContainer}>
-    <View style={styles.row}>
-      {sections.map((section, index) => (
-        <FooterSection key={index} title={section.title} items={section.items} />
-      ))}
+const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={styles.footerContainer}>
+      <View style={styles.row}>
+        {sections.map((section, index) => (
+          <FooterSection
+            key={index}
+            title={t(section.titleKey)} // Traducción del título
+            items={section.items.map((item) => ({
+              label: t(item.labelKey), // Traducción de las etiquetas
+              path: item.path,
+            }))}
+          />
+        ))}
+      </View>
+      <View style={styles.row}>
+        <SocialIcons />
+        <Newsletter />
+      </View>
     </View>
-    <View style={styles.row}>
-      <SocialIcons />
-      <Newsletter />
-    </View>
-  </View>
-);
+  );
+};
 
 // Estilos
 const styles = StyleSheet.create({
@@ -52,6 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    bottom: 0,
   },
   row: {
     flexDirection: 'row',

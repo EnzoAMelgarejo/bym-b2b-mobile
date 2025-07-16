@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSegments } from "expo-router";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import { Slot } from 'expo-router';
 import Navbar from "@/components/navbar";
 import { UserProvider } from "@/components/userContext";
-import { AuthProvider } from "./context/AuthContext";
+import AuthProvider from "./context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "@/i18n";
+import { I18nextProvider } from "react-i18next";
 
 export default function Layout() {
   const router = useRouter();
@@ -55,14 +57,16 @@ export default function Layout() {
   return (
     //@ts-ignore
     <AuthProvider>
+      <I18nextProvider i18n={i18n}>
       <View style={{ flex: 1 }}>
         <UserProvider>
-          <StatusBar barStyle={'dark-content'} translucent={false} />
+          <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
           {/* Solo muestra el Navbar si no estás en la pantalla de inicio de sesión */}
           {!isLoginScreen && <Navbar />}
           <Slot />
         </UserProvider>
       </View>
+      </I18nextProvider>
     </AuthProvider>
   );
 }
