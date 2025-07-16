@@ -32,13 +32,13 @@ During my time on the project, I was responsible for:
 
 Here are some screenshots of the mobile app:
 
-![Chart](assets/screeshots/b2b-screenshot-chart.jpg)
+![Chart](B2B-Mobile/assets/screenshots/b2b-screenshot-chart.jpg)
 
-![Chart with products](assets/screenshots/b2b-screenshot-chart-products.jpg)
+![Chart with products](B2B-Mobile/assets/screenshots/b2b-screenshot-chart-products.jpg)
 
-![Product details](assets/screenshots/b2b-screenshot-process-product.jpg)
+![Product details](B2B-Mobile/assets/screenshots/b2b-screenshot-process-product.jpg)
 
-![Forum](assets/screenshots/b2b-screenshot-forum.jpg)
+![Forum](B2B-Mobile/assets/screenshots/b2b-screenshot-forum.jpg)
 
 
 ## ⚠️ Usage Note
